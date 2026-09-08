@@ -135,6 +135,12 @@
   .lev p.buys{margin-top:10px;padding-top:8px;border-top:1px solid var(--rule);color:var(--ink)}
   .lev p.buys b{color:var(--blue);font-weight:600}
 
+  /* team */
+  .team{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px}
+  .team figure{margin:0;text-align:center}
+  .team img{width:112px;height:112px;border-radius:50%;object-fit:cover;border:1px solid var(--rule);margin:0 auto 10px;display:block}
+  .team figcaption b{display:block;font-weight:600;color:var(--navy);font-size:15.5px;line-height:1.3}
+  .team figcaption span{display:block;color:var(--muted);font-size:13.5px;line-height:1.35;margin-top:2px}
   /* thesis */
   .open{margin-top:20px}
   .open p{font-size:17px;max-width:60rem}
@@ -171,6 +177,7 @@
 
   @media (max-width:900px){
     .grid2,.grid3,.points{grid-template-columns:1fr}
+    .team{grid-template-columns:repeat(3,minmax(0,1fr))}
     .goal3{grid-template-columns:1fr}
     .goalstrip{grid-template-columns:1fr 1fr}
     .tcol{display:block}
@@ -202,6 +209,8 @@
     .prog .ar svg,.prog2 .ar svg{transform:rotate(90deg)}
     .fig{padding:16px 14px 12px}
     .box{padding:18px}
+    .team{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .team img{width:96px;height:96px}
     section{padding:32px 0}
   }
 </style>
@@ -212,7 +221,7 @@
   <div class="wrap top">
     <span class="org">Salesforce AI Research</span>
     <nav aria-label="Sections">
-      <a href="#thesis">Thesis</a><a href="#program">Program</a><a href="#tracks">Tracks</a><a href="#papers">Papers</a>
+      <a href="#team">Team</a><a href="#thesis">Thesis</a><a href="#program">Program</a><a href="#tracks">Tracks</a><a href="#papers">Papers</a>
     </nav>
   </div>
 </div>
@@ -387,6 +396,23 @@
     </div>
   </header>
 </div>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2><span class="pre">Team</span>one group, three tracks.</h2>
+    </div>
+    <div class="team">
+      <figure><img src="assets/team/bo.jpg" alt="Bo Pang"><figcaption><b>Bo Pang</b><span>Senior Researcher</span></figcaption></figure>
+      <figure><img src="assets/team/anurag.jpg" alt="Anurag Koul"><figcaption><b>Anurag Koul</b><span>Lead Research Scientist</span></figcaption></figure>
+      <figure><img src="assets/team/egor.jpg" alt="Egor Pakhomov"><figcaption><b>Egor Pakhomov</b><span>Senior Software Engineer</span></figcaption></figure>
+      <figure><img src="assets/team/hongjun.jpg" alt="Hongjun Liu"><figcaption><b>Hongjun Liu</b><span>Research Intern</span></figcaption></figure>
+      <figure><img src="assets/team/shafiq.jpg" alt="Shafiq Joty"><figcaption><b>Shafiq Joty</b><span>Salesforce AI Research</span></figcaption></figure>
+      <figure><img src="assets/team/erik.jpg" alt="Erik Nijkamp"><figcaption><b>Erik Nijkamp</b><span>Research Director</span></figcaption></figure>
+    </div>
+  </div>
+</section>
 
 <!-- THESIS -->
 <section id="thesis" class="band">
