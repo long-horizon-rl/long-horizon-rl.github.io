@@ -118,9 +118,13 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .rung svg{width:16px;height:16px;color:var(--blue)}
 .rung .to{display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
 .rung .buy{color:var(--blue-dark)}
-.leadin{display:inline-flex;align-items:center;gap:10px;margin-top:40px;color:var(--blue);font-weight:600;font-size:17px;letter-spacing:-.01em}
-.leadin svg{width:20px;height:20px;animation:cue 1.8s cubic-bezier(.45,0,.55,1) infinite}
+.step.first{min-height:0;justify-content:flex-start;padding-bottom:34vh}
+.lbl.leadin{color:var(--blue-dark);margin-bottom:0;padding-left:2px}
+.vconn{position:relative;height:72px;width:24px;color:var(--blue);margin:2px 0 8px}
+.vconn::before{content:"";position:absolute;left:9px;top:0;bottom:6px;border-left:2px solid currentColor}
+.vconn svg{position:absolute;left:0;bottom:0;width:20px;height:12px}
 .step.bad .lbl{color:#b3261e}
+.step.bad .leadin{color:var(--blue-dark)}
 .step.bad h3{color:#8f1f18}
 .step ul{list-style:none;padding:0;margin-top:14px;display:grid;gap:8px;max-width:32ch}
 .step li{position:relative;padding-left:20px;color:var(--muted);font-size:17px;line-height:1.4}
@@ -280,7 +284,7 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   .traj path{transition:none}
   .thesis .trend,.thesis .fan path,.loop .larrows path{stroke-dashoffset:0;stroke-dasharray:none;animation:none}
   .thesis .meet,.thesis .late,.loop .l1,.loop .l2,.loop .l3,.loop .lmid,.loop .lnode{opacity:1;animation:none;transform:none}
-  .btn-cue .cue,.handoff svg,.leadin svg{animation:none}
+  .btn-cue .cue,.handoff svg{animation:none}
   .chart .u1,.chart .u2,.chart .u3{transition:none}
   .more{transition:none}
 }
