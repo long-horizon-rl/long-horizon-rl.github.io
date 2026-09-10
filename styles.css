@@ -165,6 +165,10 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
    than the viewport */
 .seg .kicker{scroll-snap-align:start;scroll-margin-top:var(--seg-pad)}
 .vision:not(.why) .step{scroll-snap-align:center;scroll-margin-top:58px}
+/* the first step's landing is owned by the "Three steps" heading, so heading, ladder and Step 1 all
+   sit below the header; the chart is still in flow there, level with Step 1's text */
+#vision .statement.sep{scroll-snap-align:start;scroll-margin-top:86px}
+.vision:not(.why) .step[data-state="1"]{scroll-snap-align:none}
 .vision:not(.why) .step > .vconn{margin-top:-74px}
 .step h3{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em;line-height:1.05}
 .step p{margin-top:12px;color:var(--muted);font-size:17px;max-width:32ch}
