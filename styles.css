@@ -133,7 +133,8 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .step.bad h3{color:#8f1f18}
 .step ul{list-style:none;padding:0;margin-top:14px;display:grid;gap:8px;max-width:32ch}
 .step li{position:relative;padding-left:20px;color:var(--muted);font-size:17px;line-height:1.4}
-.step li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;border-radius:50%;background:#d9483b}
+.step li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.step.bad li::before{background:#d9483b}
 .vision{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:56px;align-items:start;margin-top:28px;margin-right:min(0px,calc((var(--max) - 100vw)/2 + var(--pad)))}
 .steps{display:grid}
 .step{min-height:72vh;display:flex;flex-direction:column;justify-content:center;opacity:.22;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateY(6px)}
