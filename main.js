@@ -40,12 +40,15 @@
     paths.forEach((p, i) => {
       const end = ends[i], frac = (end - X0) / (X1 - X0), long = end > HOUR;
       p.style.strokeDashoffset = String(1 - frac);
-      p.style.stroke = long ? colors.blue : colors.grey;
+      // stroke transitions are delayed by the draw time (see below), so a line
+      // travels in grey and only takes its final colour once it terminates
+      p.style.stroke = long ? colors.blue : (colors.fail || colors.grey);
       p.style.strokeWidth = String(long ? (end >= X1 ? w.far : w.long) : w.short);
-      p.style.opacity = long ? '1' : '.7';
+      p.style.opacity = long ? '1' : (colors.fail ? '.85' : '.7');
     });
   }
-  const COLORS = { blue: '#0176d3', grey: '#98a7b8' };
+  const COLORS = { blue: '#0176d3', grey: '#98a7b8', fail: '#e2857b' };
+  const DRAW = 1.5, STAGGER = .12; // seconds; DRAW matches the stroke-dashoffset transition in CSS
 
   // hero: ambient lines, drawn fully on load
   const heroSvg = document.querySelector('.hero-traj');
@@ -58,18 +61,33 @@
   // vision: chart states follow the focused step
   const chart = document.getElementById('vision-chart');
   const visionGroup = document.getElementById('vision-traj');
-  let visionPaths = [], visionState = -1;
+  let visionPaths = [], visionState = -1, visionArmed = reduce;
+  const VW = { short: 3, long: 4.2, far: 5 };
   if (chart && visionGroup) {
     visionPaths = buildTraj(visionGroup, { seed: 7, y0: 96, dy: 34, amp: 16 });
+    // lines stay undrawn (offset 1) until the reader moves past "Let's understand";
+    // then they are emitted from the y-axis one after another, in grey, and each
+    // takes its colour (light red = failed) only once it has terminated
+    visionPaths.forEach((p, i) => {
+      const d = i * STAGGER;
+      p.style.stroke = COLORS.grey;
+      p.style.transitionDelay = reduce ? '0s' : `${d}s, ${d + DRAW}s, ${d + DRAW}s`;
+    });
     setVisionState(0, true);
   }
   function setVisionState(s, force) {
     if (s === visionState && !force) return;
     visionState = s;
-    setState(visionPaths, s, COLORS, { short: 3, long: 4.2, far: 5 });
+    if (visionArmed) setState(visionPaths, s, COLORS, VW);
     chart.classList.remove('s0', 's1', 's2', 's3');
     chart.classList.add('s' + s);
   }
+  function armVision() {
+    if (visionArmed) return;
+    visionArmed = true;
+    setState(visionPaths, Math.max(0, visionState), COLORS, VW);
+  }
+  const leadin = document.querySelector('.step .leadin');
 
   /* ---------- reveal on entry ---------- */
   const io = new IntersectionObserver((entries) => {
@@ -139,6 +157,8 @@
       });
       steps.forEach((st, i) => st.classList.toggle('on', i === best));
       setVisionState(Number(steps[best].dataset.state) || 0);
+      // emit the trajectories once "Let's understand" has moved up past the viewport centre
+      if (!visionArmed && leadin && leadin.getBoundingClientRect().top < vh * 0.5) armVision();
     }
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
