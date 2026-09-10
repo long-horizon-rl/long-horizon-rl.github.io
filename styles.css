@@ -111,6 +111,13 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .seg:not(.active) .handoff svg{animation-play-state:paused}
 
 /* vision */
+.statement.wide{max-width:none;font-size:clamp(30px,4.2vw,58px)}
+.ladder{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.rung{display:inline-flex;align-items:center;gap:9px;padding:8px 16px 8px 8px;border-radius:999px;border:1px solid var(--rule-2);background:#fff;font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.rung .num{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700}
+.rung svg{width:16px;height:16px;color:var(--blue)}
+.rung .to{display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+.rung .buy{color:var(--blue-dark)}
 .vision{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:56px;align-items:start;margin-top:28px;margin-right:min(0px,calc((var(--max) - 100vw)/2 + var(--pad)))}
 .steps{display:grid}
 .step{min-height:72vh;display:flex;flex-direction:column;justify-content:center;opacity:.22;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateY(6px)}
@@ -215,6 +222,11 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   body{font-size:16px}
   .top nav{display:none}
   .hero{padding:100px 0 70px}
+  .ladder{gap:8px}
+  .rung{width:100%;font-size:14.5px;padding:7px 14px 7px 7px;flex-wrap:wrap;row-gap:2px}
+  .rung .num{flex:none}
+  .rung .name{white-space:nowrap}
+  .rung .to{margin-left:auto}
   .flow.chain,.flow.measures{grid-template-columns:28px minmax(0,1fr);gap:8px}
   .elbow::before{left:5px}
   .flow .arrow-h,.flow .card:not(:nth-child(2)){grid-column:2}
