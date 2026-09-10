@@ -85,11 +85,12 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .defs strong{display:block;font-size:clamp(20px,2vw,27px);letter-spacing:-.025em;color:var(--ink);line-height:1.2}
 .defs .sub{display:block;color:var(--muted);margin-top:8px;font-size:16px}
 .judged{margin-top:44px;max-width:960px}
-.judged-head{display:flex;align-items:flex-end;gap:10px;margin-bottom:6px;padding-left:2px}
-.judged-head .lbl{margin-bottom:6px}
-.arrow-d{width:46px;height:46px;color:var(--blue)}
-.measures{display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr);align-items:center;gap:12px}
-.measures .card{padding:20px 22px;border-radius:10px;background:var(--bg-2);border:1px solid var(--rule)}
+.judged-lbl{display:block;padding-left:2px;margin-bottom:10px}
+.measures{display:grid;grid-template-columns:40px minmax(0,1fr) 56px minmax(0,1fr);align-items:center;gap:12px}
+.elbow{position:relative;align-self:stretch;color:var(--blue)}
+.elbow::before{content:"";position:absolute;left:9px;right:0;top:-10px;bottom:50%;border-left:2px solid currentColor;border-bottom:2px solid currentColor;border-bottom-left-radius:8px}
+.elbow svg{position:absolute;right:-2px;top:50%;width:12px;height:20px;transform:translateY(calc(-50% - 1px))}
+.measures .card{align-self:stretch;padding:20px 22px;border-radius:10px;background:var(--bg-2);border:1px solid var(--rule)}
 .measures strong{display:block;font-size:clamp(18px,1.6vw,21px);letter-spacing:-.02em;color:var(--ink);line-height:1.25}
 .measures .sub{display:block;color:var(--muted);margin-top:6px;font-size:15px}
 .measures sup{color:var(--blue);font-weight:600}
@@ -210,7 +211,9 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   .top nav{display:none}
   .hero{padding:100px 0 70px}
   .defs{grid-template-columns:1fr;gap:28px}
-  .measures{grid-template-columns:1fr;gap:8px}
+  .measures{grid-template-columns:28px minmax(0,1fr);gap:8px}
+  .elbow::before{left:5px}
+  .measures .arrow-h,.measures .card:last-child{grid-column:2}
   .arrow-h{transform:rotate(90deg);width:36px}
   .team{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
   .team img{width:88px;height:88px}
