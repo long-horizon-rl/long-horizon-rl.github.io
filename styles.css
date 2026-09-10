@@ -128,12 +128,11 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .vconn{position:relative;height:64px;width:24px;color:var(--blue);margin:0 0 8px 12px}
 .vconn::before{content:"";position:absolute;left:9px;top:0;bottom:6px;border-left:2px solid currentColor}
 .vconn svg{position:absolute;left:0;bottom:0;width:20px;height:12px}
-.step.bad .lbl{color:#b3261e}
-.step.bad .leadin{color:var(--blue-dark)}
-.step.bad h3{color:#8f1f18}
 .step ul{list-style:none;padding:0;margin-top:14px;display:grid;gap:8px;max-width:32ch}
 .step li{position:relative;padding-left:20px;color:var(--muted);font-size:17px;line-height:1.4}
 .step li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.step.bad ul{margin-top:18px;padding:14px 18px 14px 16px;border:1.5px solid #e4a59d;border-radius:10px;background:#fff8f7;max-width:34ch}
+.step.bad li{color:#a8261c}
 .step.bad li::before{background:#d9483b}
 .vision{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:56px;align-items:start;margin-top:28px;margin-right:min(0px,calc((var(--max) - 100vw)/2 + var(--pad)))}
 .steps{display:grid}
