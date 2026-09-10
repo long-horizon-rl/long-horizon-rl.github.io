@@ -158,6 +158,10 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .sv-navy{font-family:var(--font);fill:var(--navy);font-weight:600}
 .sv-blue{font-family:var(--font);fill:var(--blue);font-weight:600}
 .sv-title{font-family:var(--font);fill:var(--ink);font-weight:600}
+.sv-legend{font-family:var(--font);fill:var(--muted)}
+.legend-sm{display:none}
+.callout text{font-family:var(--font);fill:#b3261e;font-weight:600}
+.endmark,.callout{pointer-events:none}
 
 /* thesis */
 .fig{margin-top:44px;max-width:980px}
@@ -261,6 +265,8 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   .chart text{font-size:26px}
   .chart .still{font-size:20px}
   .chart .sv-label{display:none}
+  .chart .sv-legend{display:none}
+  .legend-sm{display:block;margin:6px 0 0;font-size:12.5px;line-height:1.35;color:var(--muted)}
 }
 
 /* ---------- narrow screens: stacked figures replace the wide SVGs ---------- */

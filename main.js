@@ -23,18 +23,43 @@
     }
     return d;
   }
+  const SVG = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) { const e = document.createElementNS(SVG, tag); Object.keys(attrs).forEach((k) => e.setAttribute(k, attrs[k])); return e; }
   function buildTraj(container, opts) {
     const rnd = rng(opts.seed), n = ENDS[0].length, paths = [];
     for (let i = 0; i < n; i++) {
-      const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const p = document.createElementNS(SVG, 'path');
       p.setAttribute('d', wavy(opts.y0 + i * opts.dy, rnd, opts.amp));
       p.setAttribute('pathLength', '1');
       p.style.strokeDashoffset = '1';
       container.appendChild(p);
       paths.push(p);
     }
+    if (opts.markers) {
+      // a start dot on the axis and an end marker (cross = failed, dot = ended, chevron = still running),
+      // kept in a sibling group so they do not pick up the line styling
+      const marks = el('g', { class: 'marks' });
+      container.parentNode.insertBefore(marks, container.nextSibling);
+      paths.forEach((p) => {
+        const s = p.getPointAtLength(0);
+        marks.appendChild(el('circle', { cx: s.x.toFixed(1), cy: s.y.toFixed(1), r: 3, fill: '#7f91a6' }));
+        p.mark = el('g', { class: 'endmark', opacity: '0' });
+        marks.appendChild(p.mark);
+      });
+    }
     return paths;
   }
+  // end markers fade in once their line has terminated; cancelled/hidden while it is still moving
+  function placeMark(p, kind, delayMs) {
+    const g = p.mark, pt = p.getPointAtLength(p.markFrac * p.getTotalLength());
+    g.setAttribute('transform', `translate(${pt.x.toFixed(1)},${pt.y.toFixed(1)})`);
+    g.innerHTML = kind === 'fail' ? '<path d="M-5,-5L5,5M5,-5L-5,5" fill="none" stroke="#d9483b" stroke-width="2.2" stroke-linecap="round"/>'
+      : kind === 'far' ? '<path d="M-4,-6L3,0L-4,6" fill="none" stroke="#0176d3" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'
+      : '<circle r="3.6" fill="#0176d3"/>';
+    if (g.anim) g.anim.cancel();
+    g.anim = g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: reduce ? 0 : 350, delay: reduce ? 0 : delayMs, fill: 'both', easing: 'ease' });
+  }
+  function hideMark(p) { if (p.mark && p.mark.anim) { p.mark.anim.cancel(); p.mark.anim = null; } p.markFrac = -1; }
   function setState(paths, state, colors, sw) {
     const ends = ENDS[state], w = sw || { short: 2, long: 2.6, far: 3.2 };
     paths.forEach((p, i) => {
@@ -45,6 +70,10 @@
       p.style.stroke = long ? colors.blue : (colors.fail || colors.grey);
       p.style.strokeWidth = String(long ? (end >= X1 ? w.far : w.long) : w.short);
       p.style.opacity = long ? '1' : (colors.fail ? '.85' : '.7');
+      if (p.mark && p.markFrac !== frac) {
+        p.markFrac = frac;
+        placeMark(p, long ? (end >= X1 ? 'far' : 'end') : 'fail', (i * STAGGER + DRAW) * 1000);
+      }
     });
   }
   const COLORS = { blue: '#0176d3', grey: '#98a7b8', fail: '#e2857b' };
@@ -62,13 +91,13 @@
   const VW = { short: 3, long: 4.2, far: 5 };
   const groups = Array.from(document.querySelectorAll('.vision')).map((el) => {
     const chart = el.querySelector('.chart'), traj = el.querySelector('.traj');
-    const paths = traj ? buildTraj(traj, { seed: 7, y0: 96, dy: 34, amp: 16 }) : [];
+    const paths = traj ? buildTraj(traj, { seed: 7, y0: 96, dy: 34, amp: 16, markers: true }) : [];
     // lines stay undrawn (offset 1) until the block's first step approaches; then they
     // are emitted from the y-axis one after another, in grey, and each takes its
     // colour (light red = failed) only once it has terminated
     paths.forEach((p) => { p.style.stroke = COLORS.grey; });
     setDelays(paths);
-    return { el, chart, paths, steps: Array.from(el.querySelectorAll('.step')), state: -1, armed: reduce };
+    return { el, chart, paths, callout: el.querySelector('.callout'), steps: Array.from(el.querySelectorAll('.step')), state: -1, armed: reduce };
   });
   function setDelays(paths) {
     paths.forEach((p, i) => {
@@ -76,22 +105,37 @@
       p.style.transitionDelay = reduce ? '0s' : `${d}s, ${d + DRAW}s, ${d + DRAW}s`;
     });
   }
+  const CALLOUT_LINE = 6; // the longest Today run
+  function showCallout(g, on) {
+    const c = g.callout; if (!c) return;
+    if (c.anim) c.anim.cancel();
+    if (!on) return;
+    const p = g.paths[CALLOUT_LINE], pt = p.getPointAtLength(p.markFrac * p.getTotalLength());
+    c.setAttribute('transform', `translate(${(pt.x + 8).toFixed(1)},${pt.y.toFixed(1)})`);
+    c.anim = c.animate([{ opacity: 0 }, { opacity: 1 }], { duration: reduce ? 0 : 400, delay: reduce ? 0 : (CALLOUT_LINE * STAGGER + DRAW + .2) * 1000, fill: 'both', easing: 'ease' });
+  }
+  function applyState(g) {
+    setState(g.paths, g.state, COLORS, VW);
+    showCallout(g, g.state === 0);
+  }
   function setGroupState(g, s) {
     if (s === g.state) return;
     g.state = s;
-    if (g.armed) setState(g.paths, s, COLORS, VW);
+    if (g.armed) applyState(g);
     if (g.chart) { g.chart.classList.remove('s0', 's1', 's2', 's3'); g.chart.classList.add('s' + s); }
   }
   function armGroup(g) {
     if (g.armed) return;
     g.armed = true;
-    setState(g.paths, Math.max(0, g.state), COLORS, VW);
+    g.state = Math.max(0, g.state);
+    applyState(g);
   }
   // scrolling back above a block rewinds its lines, so they roll out again on return
   function resetGroup(g) {
     if (!g.armed || reduce) return;
     g.armed = false;
-    g.paths.forEach((p) => { p.style.transition = 'none'; p.style.strokeDashoffset = '1'; p.style.stroke = COLORS.grey; });
+    g.paths.forEach((p) => { p.style.transition = 'none'; p.style.strokeDashoffset = '1'; p.style.stroke = COLORS.grey; hideMark(p); });
+    showCallout(g, false);
     void g.el.offsetWidth; // flush so the rewind is instant and the next draw transitions
     g.paths.forEach((p) => { p.style.transition = ''; });
     setDelays(g.paths); // the shorthand reset above also cleared the per-line delays
