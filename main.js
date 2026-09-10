@@ -122,6 +122,7 @@
       s.classList.toggle('active', inTimeline && i === active);
       s.classList.toggle('passed', inTimeline && i < active);
       s.classList.toggle('dim', inTimeline && i !== active);
+      s.classList.toggle('next', inTimeline && i === active + 1);
     });
     // nav: light the link for the active chapter, or the nearest earlier chapter that has one
     let navId = null;
