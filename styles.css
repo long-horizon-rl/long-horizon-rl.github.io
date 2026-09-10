@@ -73,9 +73,6 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .node{position:absolute;top:8px;left:50%;width:14px;height:14px;transform:translateX(-50%);border-radius:50%;background:#fff;border:2px solid var(--rule-2);transition:background .4s,border-color .4s,box-shadow .4s,transform .4s var(--ease)}
 .seg.active .node,.seg.passed .node{background:var(--blue);border-color:var(--blue)}
 .seg.active .node{box-shadow:0 0 0 8px rgba(1,118,211,.12);transform:translateX(-50%) scale(1.15)}
-.chev{position:absolute;top:-30px;left:50%;width:9px;height:9px;transform:translateX(-50%) rotate(45deg);border-right:2px solid var(--rule-2);border-bottom:2px solid var(--rule-2);transition:border-color .4s}
-.seg.active .chev,.seg.passed .chev{border-color:var(--blue)}
-.seg:first-of-type .chev{display:none}
 
 .kicker{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-dark)}
 .statement{font-size:clamp(34px,5.2vw,72px);line-height:1.02;letter-spacing:-.04em;font-weight:700;margin-top:14px;max-width:16ch}
@@ -321,7 +318,7 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   [data-reveal]{opacity:1;transform:none;transition:none}
-  .seg,.step,.node,.chev,.spine-fill,.lnode{transition:none}
+  .seg,.step,.node,.spine-fill,.lnode{transition:none}
   .seg.dim{opacity:1}
   .step{opacity:1;transform:none}
   .traj path{transition:none}
