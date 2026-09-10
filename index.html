@@ -7,792 +7,360 @@
 <link rel="icon" type="image/svg+xml" href="assets/salesforce.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <meta name="description" content="A research program at Salesforce AI Research on agents that stay reliable over horizons of days, and the foundation that trains them.">
-<style>
-  :root{
-    --paper:#f8fbfe; --band:#eef5fc; --ink:#243b53; --muted:#5e7288; --rule:#dbe7f2; --rule-soft:#e8f0f8; --shadow:0 1px 2px rgba(3,45,96,.05);
-    --blue:#0176d3; --blue-dark:#0b5cab; --navy:#032d60; --tint:#eef4ff; --tint-line:#aacbff;
-    --font:"DM Sans","Salesforce Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    --max:1120px; --r:12px;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  html,body{overflow-x:clip}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
-  a{color:var(--blue-dark);text-decoration:none}
-  a:hover{text-decoration:underline;text-underline-offset:3px}
-  a:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
-  img,svg{display:block;max-width:100%}
-  p{margin:0 0 1em}
-  h1,h2,h3,h4{font-weight:700;letter-spacing:-.015em;margin:0;color:var(--navy)}
-  h1{font-size:clamp(34px,5.2vw,60px);line-height:1.04}
-  h2{font-size:clamp(24px,2.6vw,32px);line-height:1.25;font-weight:400;color:var(--navy)}
-  h2 .pre{font-weight:700}
-  h2 .pre::after{content:"\2009\2014\2009";font-weight:400;color:var(--navy)}
-  h3{font-size:20px;line-height:1.3;font-weight:600}
-  h4{font-size:16.5px;line-height:1.35;font-weight:600}
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
-  .muted{color:var(--muted)}
-  section{padding:40px 0;scroll-margin-top:64px}
-  section.band{background:transparent}
-  section + section{border-top:1px solid var(--rule)}
-  .sec-head{margin-bottom:20px}
-  .sec-head p{margin:10px 0 0;color:var(--muted);font-size:17px;max-width:46rem}
-  figure{margin:0}
-  .fig{background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:28px 28px 22px;box-shadow:var(--shadow)}
-  .fig svg{width:100%;height:auto}
-  .fig .mobile{display:none}
-
-  .box{background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:24px 26px;box-shadow:var(--shadow)}
-  .box.tint{background:var(--tint);border-color:var(--tint-line)}
-  .box.gray{background:var(--band);border-color:var(--band)}
-  .tag{font-size:13.5px;font-weight:600;color:var(--blue);margin-bottom:8px}
-  .box h3{margin-bottom:8px}
-  .box p{margin:0;color:var(--ink)}
-  .box p.muted{color:var(--muted)}
-  .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-
-  /* sticky top bar */
-  .topbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--rule)}
-  .top{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center;padding:12px 0;font-size:14.5px}
-  .brand{display:inline-flex;align-items:center;gap:12px;color:var(--navy)}
-  .brand img{height:34px;width:auto}
-  .brand span{display:flex;flex-direction:column;line-height:1.35}
-  .brand strong{font-size:15px;font-weight:700;letter-spacing:-.02em}
-  .brand small{font-size:12.5px;color:var(--muted)}
-  .top nav a{color:var(--muted);font-weight:600;margin-left:6px;padding:7px 12px;border-radius:8px}
-  .top nav a:hover{color:var(--navy);background:var(--band);text-decoration:none}
-
-  /* hero */
-  header.hero{padding:56px 0 36px;text-align:center}
-  header.hero h1{font-size:clamp(40px,6vw,72px);letter-spacing:-.04em;line-height:1.02;margin:14px auto 0}
-  .eyebrow{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-dark);border:1px solid var(--rule);border-radius:999px;padding:7px 16px;background:#fff}
-  header.hero .sub{font-size:clamp(18px,1.6vw,20px);line-height:1.7;color:var(--ink);max-width:800px;margin:26px auto 0}
-  header.hero .sub b{color:var(--navy);font-weight:600}
-  .stats{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 40px;margin:30px auto 0;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);max-width:940px}
-  .stats div{display:flex;align-items:baseline;gap:8px}
-  .stats b{font-size:28px;font-weight:700;color:var(--blue-dark);font-variant-numeric:tabular-nums}
-  .stats span{font-size:14px;color:var(--muted)}
-  .hero-fig{text-align:left}
-  .hero-fig{margin-top:36px;background:var(--band);border-radius:var(--r);padding:4px 24px}
-  .hrow{display:grid;grid-template-columns:190px minmax(0,1fr);gap:28px;align-items:start;padding:12px 0}
-  .hrow{border-top:1px solid var(--rule)}
-  .hrow.first{border-top:0}
-  .hrow .hl h3{font-size:19px;margin-bottom:4px}
-  .hrow .hl p{font-size:14px;color:var(--muted);margin:0;line-height:1.4}
-  .hrow .hf{background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:10px 14px 8px}
-  .hrow .hf svg{width:100%;height:auto}
-  .hrow .mobile{display:none}
-  .prog{display:grid;grid-template-columns:1.35fr 24px 1fr 24px 1fr 24px 1.15fr;gap:0;align-items:stretch}
-  .prog .cell{border:1px solid var(--rule);border-radius:var(--r);padding:14px 16px;background:#fff}
-  .prog .cell.tint{background:var(--tint);border-color:var(--tint-line)}
-  .prog .k{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:5px}
-  .prog h4{font-size:15.5px;margin-bottom:4px}
-  .prog p{font-size:14px;color:var(--muted);margin:0;line-height:1.4}
-  .prog .levers3{display:grid;gap:7px}
-  .prog .levers3 div{font-size:14px;line-height:1.35;color:var(--muted)}
-  .prog .levers3 b{color:var(--navy);font-weight:600;display:block}
-  .prog .ar{display:flex;align-items:center;justify-content:center;color:var(--tint-line)}
-  .goalstrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-  .trow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-  .trow .cell{border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;background:#fff;min-height:128px}
-  .trow .k{font-size:12.5px;font-weight:600;color:var(--blue);margin-bottom:3px}
-  .trow h4{font-size:14.5px;line-height:1.3;margin-bottom:5px}
-  .trow p{font-size:13px;color:var(--muted);margin:0;line-height:1.35}
-  .trow p b{color:var(--navy);font-weight:600}
-  .prog2{display:grid;gap:10px}
-  .prog2 .chips{display:flex;gap:10px;flex-wrap:wrap}
-  .prog2 .chip{flex:1 1 200px;border:1px solid var(--rule);border-radius:var(--r);background:#fff;padding:8px 12px;font-size:13.5px;color:var(--muted);line-height:1.35}
-  .prog2 .chip b{color:var(--navy);font-weight:600;margin-right:6px}
-  .prog2 .flow{display:grid;grid-template-columns:1fr 22px 1fr 22px 1.2fr;align-items:stretch}
-  .prog2 .cell{border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;background:#fff}
-  .prog2 .cell.tint{background:var(--tint);border-color:var(--tint-line)}
-  .prog2 .k{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:3px}
-  .prog2 p{font-size:13.5px;color:var(--ink);margin:0;line-height:1.35}
-  .prog2 .ar{display:flex;align-items:center;justify-content:center;color:var(--tint-line)}
-  .goal3{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px}
-  .goal3 .cell,.goalstrip .cell{border:1px solid var(--rule);border-radius:var(--r);padding:10px 12px;background:#fff}
-  .goalstrip .cell{min-height:128px}
-  .goal3 .cell.tint,.goalstrip .cell.tint{background:var(--tint);border-color:var(--tint-line)}
-  .goal3 .k,.goalstrip .k{font-size:12.5px;font-weight:600;color:var(--blue);margin-bottom:3px}
-  .goal3 h4,.goalstrip h4{font-size:14.5px;margin-bottom:2px;line-height:1.3}
-  .goal3 p,.goalstrip p{font-size:13px;color:var(--muted);margin:0;line-height:1.35}
-
-  /* svg text */
-  .sv-label{font-family:var(--font);fill:var(--muted)}
-  .sv-ink{font-family:var(--font);fill:var(--ink)}
-  .sv-navy{font-family:var(--font);fill:var(--navy);font-weight:600}
-  .sv-blue{font-family:var(--font);fill:var(--blue);font-weight:600}
-  .sv-title{font-family:var(--font);fill:var(--ink);font-weight:600}
-  .draw{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.6s cubic-bezier(.4,0,.2,1) .3s forwards}
-  .fan path{stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 1.4s cubic-bezier(.4,0,.2,1) .6s forwards}
-  .late{opacity:0;animation:fade .5s ease 1.8s forwards}
-  @keyframes draw{to{stroke-dashoffset:0}}
-  @keyframes fade{to{opacity:1}}
-  @media (prefers-reduced-motion:reduce){.draw,.fan path{stroke-dasharray:none;stroke-dashoffset:0;animation:none}.late{opacity:1;animation:none}}
-
-  /* program */
-  .steps{display:grid;grid-template-columns:1fr 30px 1fr 30px 1fr;gap:0;align-items:stretch}
-  .steps .box{padding:22px 24px}
-  .steps .arrow{display:flex;align-items:center;justify-content:center;color:var(--tint-line)}
-  .steps .arrow svg{width:18px;height:18px}
-  .steps .k{font-size:13.5px;font-weight:600;color:var(--blue);margin-bottom:6px}
-  .steps h3{font-size:19px}
-  .steps p{font-size:15.5px}
-  .lev{margin-top:20px}
-  .lev .box{padding:18px 22px}
-  .lev .k{font-size:13.5px;font-weight:600;color:var(--blue);margin-bottom:4px}
-  .lev h3{font-size:17px;margin-bottom:6px}
-  .lev p{font-size:15px;color:var(--muted)}
-  .lev .box > p:not(.buys){min-height:6.2em}
-  .lev p.buys{margin-top:10px;padding-top:8px;border-top:1px solid var(--rule);color:var(--ink)}
-  .lev p.buys b{color:var(--blue);font-weight:600}
-
-  /* team */
-  .team{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px}
-  .team figure{margin:0;text-align:center}
-  .team img{width:112px;height:112px;border-radius:50%;object-fit:cover;border:1px solid var(--rule);margin:0 auto 10px;display:block}
-  .team figcaption b{display:block;font-weight:600;color:var(--navy);font-size:15.5px;line-height:1.3}
-  .team figcaption a{color:var(--navy)}
-  .team figcaption a:hover{color:var(--blue)}
-  .team figure a img{transition:none}
-  .team figcaption span{display:block;color:var(--muted);font-size:13px;line-height:1.35;margin-top:2px;white-space:nowrap}
-  /* thesis */
-  .open{margin-top:20px}
-  .open p{font-size:17px;max-width:60rem}
-  .open h3{font-size:20px;margin-bottom:10px}
-  .points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-  .points p{margin:0;font-size:15px;line-height:1.5;color:var(--ink);background:#fff;border:1px solid var(--tint-line);border-radius:var(--r);padding:12px 14px;max-width:none}
-  .points p b{color:var(--navy);font-weight:600}
-
-  /* tracks */
-  .tracks3{margin-top:20px;align-items:stretch;scroll-margin-top:72px}
-  .tcol{display:contents}
-  .tcol .box.head{grid-row:1}
-  .tcol .plist{grid-row:2;margin-top:0;align-content:start}
-  .tcol .box.head{border-top:3px solid var(--blue)}
-  .tcol .box.head p{font-size:15.5px}
-  .tcol .box.head > p{min-height:6.2em}
-  .tcol .buys{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--rule);font-size:14px;line-height:1.45}
-  .tcol .buys dt{font-weight:600;color:var(--blue);display:inline}
-  .tcol .buys dt::after{content:" "}
-  .tcol .buys dd{display:inline;margin:0;color:var(--ink)}
-  .tcol .buys dd::after{content:"";display:block;height:4px}
-  .tcol .plist{display:grid;gap:12px}
-  .paper{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;padding:16px 18px}
-  .paper .thumb{width:44px;border:1px solid var(--rule);border-radius:2px;background:#fff;aspect-ratio:510/660;object-fit:cover;object-position:top;filter:grayscale(1)}
-  .paper .thumb.soon{display:flex;align-items:center;justify-content:center;border-style:dashed;color:var(--muted);font-size:9.5px;text-align:center;padding:4px;line-height:1.2}
-  .paper h4 a{color:var(--navy)}
-  .paper h4 a:hover{color:var(--blue)}
-  .paper p{font-size:14.5px;line-height:1.5;margin:5px 0 0;color:var(--ink)}
-  .paper .meta{font-size:13px;color:var(--muted);margin-top:8px}
-  .paper .meta a{margin-left:8px}
-
-  footer{border-top:1px solid var(--rule);padding:24px 0 44px;font-size:14.5px;color:var(--muted);background:#fff}
-  footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
-  footer nav a{color:var(--muted);font-weight:600;margin-left:18px}
-  footer nav a:hover{color:var(--navy);text-decoration:none}
-
-  @media (max-width:900px){
-    .grid2,.grid3,.points{grid-template-columns:1fr}
-    .team{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .goal3{grid-template-columns:1fr}
-    .goalstrip{grid-template-columns:1fr 1fr}
-    .tcol{display:block}
-    .tcol .box.head,.tcol .plist{grid-row:auto}
-    .tcol .plist{margin-top:12px}
-    .tcol + .tcol{margin-top:20px}
-    .prog,.prog2 .flow,.trow{grid-template-columns:1fr}
-    .prog .ar,.prog2 .ar{height:24px}
-    .prog .ar svg,.prog2 .ar svg{transform:rotate(90deg)}
-    .steps{grid-template-columns:1fr}
-    .steps .arrow{height:30px}
-    .steps .arrow svg{transform:rotate(90deg)}
-    section{padding:36px 0}
-  }
-  @media (max-width:640px){
-    body{font-size:16px}
-    .wrap{padding:0 20px}
-    .top nav a{margin-left:0;margin-right:16px}
-    header.hero{padding-top:48px}
-    header.hero h1{font-size:34px}
-    .hero-fig{padding:4px 14px;margin-top:28px}
-    .hrow{grid-template-columns:1fr;gap:12px;padding:18px 0}
-    .hrow .hf{padding:10px 8px 6px}
-    .hrow .desktop,.fig .desktop{display:none}
-    .hrow .mobile,.fig .mobile{display:block}
-    .prog,.prog2 .flow,.trow{grid-template-columns:1fr}
-    .prog .ar,.prog2 .ar{height:24px}
-    .prog .ar svg,.prog2 .ar svg{transform:rotate(90deg)}
-    .fig{padding:16px 14px 12px}
-    .box{padding:18px}
-    .team{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-    .team img{width:96px;height:96px}
-    section{padding:32px 0}
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<!-- top bar -->
 <div class="topbar">
   <div class="wrap top">
     <a class="brand" href="#top"><img src="assets/salesforce.svg" alt="Salesforce"><span><strong>Salesforce AI Research</strong><small>Long-Horizon RL</small></span></a>
     <nav aria-label="Sections">
-      <a href="#team">Team</a><a href="#thesis">Thesis</a><a href="#program">Program</a><a href="#tracks">Tracks</a><a href="#papers">Papers</a>
+      <a href="#goal">Goal</a><a href="#vision">Vision</a><a href="#thesis">Thesis</a><a href="#program">Program</a><a href="#papers">Papers</a><a href="#team">Team</a>
     </nav>
   </div>
 </div>
 
-<div class="wrap">
-  <header class="hero">
-    <div class="eyebrow" id="top">Salesforce AI Research · Research program</div>
-    <h1>Long-Horizon RL<br>for Enterprise Agents</h1>
-    <p class="sub">We post-train open models into agents that pursue one goal for days. <b>The goal is long-horizon autonomy; specialized intelligence is the means.</b> Three levers, the harness, the environment and the algorithm, build one foundation, measured as success rate over long horizons.</p>
-
-    <div class="hero-fig">
-
-      <!-- GOAL -->
-      <div class="hrow first">
-        <div class="hl">
-          <h3>Goal</h3>
-          <p>Long-horizon autonomy, reached through specialized intelligence.</p>
-        </div>
-        <div class="goalstrip">
-          <div class="cell tint"><div class="k">Goal</div><h4>Long-horizon autonomy</h4><p>agents that pursue one goal for days</p></div>
-          <div class="cell"><div class="k">Means</div><h4>Specialized intelligence</h4><p>small open models, post-trained per business</p></div>
-          <div class="cell"><div class="k">Primary measure</div><h4>Success rate over long horizons</h4><p>pass<sup>k</sup>; without a high rate nothing else matters</p></div>
-          <div class="cell"><div class="k">Secondary measure</div><h4>Cost</h4><p>the same success rate at a fraction of the compute</p></div>
-        </div>
-      </div>
-
-      <!-- VISION -->
-      <div class="hrow">
-        <div class="hl">
-          <h3>Vision</h3>
-          <p>The horizon grows one unlock at a time: the harness buys a day, cascaded intelligence a week, and specialized intelligence wins the last mile.</p>
-        </div>
-        <div class="hf">
-          <svg class="desktop" viewBox="0 0 920 232" role="img" aria-label="Trajectories grow longer with each unlock. Today most runs end within an hour, at the context window and the process. The harness unlocks a day; cascaded intelligence unlocks a week; specialized intelligence unlocks weeks and beyond, where runs are still going.">
-            <defs>
-              <linearGradient id="g0" gradientUnits="userSpaceOnUse" x1="10" y1="0" x2="380" y2="0"><stop offset="0" stop-color="#6b7178" stop-opacity="1"/><stop offset=".6" stop-color="#6b7178" stop-opacity=".6"/><stop offset="1" stop-color="#6b7178" stop-opacity="0"/></linearGradient>
-              <linearGradient id="g1" gradientUnits="userSpaceOnUse" x1="10" y1="0" x2="560" y2="0"><stop offset="0" stop-color="#0176d3" stop-opacity=".55"/><stop offset=".7" stop-color="#0176d3" stop-opacity=".45"/><stop offset="1" stop-color="#0176d3" stop-opacity="0"/></linearGradient>
-              <linearGradient id="g2" gradientUnits="userSpaceOnUse" x1="10" y1="0" x2="740" y2="0"><stop offset="0" stop-color="#0176d3" stop-opacity=".8"/><stop offset=".75" stop-color="#0176d3" stop-opacity=".7"/><stop offset="1" stop-color="#0176d3" stop-opacity="0"/></linearGradient>
-              <marker id="ahvg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#8c8c8c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></marker>
-            </defs>
-
-            <!-- the unlocks: vertical lines -->
-            <g stroke="#0176d3" stroke-width="1.4">
-              <line x1="380" y1="64" x2="380" y2="184"/><line x1="560" y1="64" x2="560" y2="184"/><line x1="740" y1="64" x2="740" y2="184"/>
-            </g>
-            <g class="sv-blue" font-size="14">
-              <text x="387" y="20">Unlock 1</text><text x="567" y="20">Unlock 2</text><text x="747" y="20">Unlock 3</text>
-            </g>
-            <g class="sv-navy" font-size="15">
-              <text x="387" y="39">the harness</text><text x="567" y="39">cascaded intelligence</text><text x="747" y="39">specialized intelligence</text>
-            </g>
-            <g class="sv-label" font-size="13">
-              <text x="387" y="56">state in files, ticks, resume</text><text x="567" y="56">compression, cheap labor</text><text x="747" y="56">RL per vertical</text>
-            </g>
-            <text class="sv-navy" font-size="15" x="10" y="39">Today: runs end within an hour</text>
-            <text class="sv-blue" font-size="13.5" x="905" y="186" text-anchor="end">still running</text>
-
-            <!-- trajectories: each unlock lets them grow longer -->
-            <g>
-              <path d="M10,76.0 C38,76.0 52,81.6 80,81.6 C108,81.6 122,75.1 150,75.1 C176,75.1 188,70.8 214,70.8" fill="none" stroke="url(#g0)" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M10,89.0 C38,89.0 52,89.7 80,89.7 C108,89.7 122,84.5 150,84.5 C178,84.5 192,87.9 220,87.9 C239,87.9 249,91.2 268,91.2" fill="none" stroke="url(#g0)" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M10,102.0 C38,102.0 52,96.7 80,96.7 C108,96.7 122,99.1 150,99.1 C178,99.1 192,104.8 220,104.8 C248,104.8 262,101.7 290,101.7 C308,101.7 318,99.5 336,99.5" fill="none" stroke="url(#g0)" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M10,115.0 C38,115.0 52,111.0 80,111.0 C108,111.0 122,117.1 150,117.1 C178,117.1 192,115.8 220,115.8 C248,115.8 262,112.3 290,112.3 C318,112.3 332,117.1 360,117.1 C388,117.1 402,120.3 430,120.3 C434,120.3 436,113.2 440,113.2" fill="none" stroke="url(#g1)" stroke-width="2.1" stroke-linecap="round"/>
-              <path d="M10,128.0 C38,128.0 52,129.1 80,129.1 C108,129.1 122,129.5 150,129.5 C178,129.5 192,125.7 220,125.7 C248,125.7 262,128.7 290,128.7 C318,128.7 332,133.0 360,133.0 C388,133.0 402,128.0 430,128.0 C458,128.0 472,122.6 500,122.6 C512,122.6 518,127.0 530,127.0" fill="none" stroke="url(#g1)" stroke-width="2.1" stroke-linecap="round"/>
-              <path d="M10,141.0 C38,141.0 52,143.5 80,143.5 C108,143.5 122,138.8 150,138.8 C178,138.8 192,140.4 220,140.4 C248,140.4 262,146.5 290,146.5 C318,146.5 332,142.8 360,142.8 C388,142.8 402,135.1 430,135.1 C458,135.1 472,138.2 500,138.2 C528,138.2 542,144.4 570,144.4 C598,144.4 612,141.4 640,141.4" fill="none" stroke="url(#g2)" stroke-width="2.4" stroke-linecap="round"/>
-              <path d="M10,154.0 C38,154.0 52,152.8 80,152.8 C108,152.8 122,152.4 150,152.4 C178,152.4 192,158.3 220,158.3 C248,158.3 262,157.1 290,157.1 C318,157.1 332,149.5 360,149.5 C388,149.5 402,150.1 430,150.1 C458,150.1 472,156.5 500,156.5 C528,156.5 542,155.4 570,155.4 C598,155.4 612,151.8 640,151.8 C668,151.8 682,155.9 710,155.9 C738,155.9 752,158.3 780,158.3 C808,158.3 822,151.6 850,151.6 C872,151.6 883,148.3 905,148.3" fill="none" stroke="#0176d3" stroke-width="2.8" stroke-linecap="round"/>
-              <path d="M10,167.0 C38,167.0 52,164.5 80,164.5 C108,164.5 122,170.6 150,170.6 C178,170.6 192,171.7 220,171.7 C248,171.7 262,163.4 290,163.4 C318,163.4 332,161.6 360,161.6 C388,161.6 402,168.7 430,168.7 C458,168.7 472,169.5 500,169.5 C528,169.5 542,164.8 570,164.8 C598,164.8 612,167.7 640,167.7 C668,167.7 682,172.1 710,172.1 C738,172.1 752,166.1 780,166.1 C808,166.1 822,160.4 850,160.4 C872,160.4 883,166.3 905,166.3" fill="none" stroke="#0176d3" stroke-width="2.8" stroke-linecap="round"/>
-            </g>
-
-            <!-- horizon axis -->
-            <line x1="10" y1="197" x2="910" y2="197" stroke="#8c8c8c" stroke-width="1.1" marker-end="url(#ahvg)"/>
-            <g stroke="#8c8c8c" stroke-width="1.1"><line x1="380" y1="194" x2="380" y2="200"/><line x1="560" y1="194" x2="560" y2="200"/><line x1="740" y1="194" x2="740" y2="200"/></g>
-            <g class="sv-ink" font-size="14">
-              <text x="10" y="215">minutes</text><text x="380" y="215" text-anchor="middle">an hour</text><text x="560" y="215" text-anchor="middle">a day</text><text x="740" y="215" text-anchor="middle">a week</text><text x="910" y="215" text-anchor="end">weeks and beyond</text>
-            </g>
-            <g class="sv-label" font-size="12.5">
-              <text x="380" y="229" text-anchor="middle">context window, process</text><text x="560" y="229" text-anchor="middle">attention, cost</text><text x="740" y="229" text-anchor="middle">the last mile: errors compound</text>
-            </g>
-          </svg>
-          <svg class="mobile" viewBox="0 0 390 250" role="img" aria-label="Trajectories grow longer with each unlock: the harness, cascaded intelligence, specialized intelligence.">
-            <defs>
-              <linearGradient id="gm0" gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="150" y2="0"><stop offset="0" stop-color="#6b7178" stop-opacity="1"/><stop offset="1" stop-color="#6b7178" stop-opacity="0"/></linearGradient>
-              <linearGradient id="gm1" gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="240" y2="0"><stop offset="0" stop-color="#0176d3" stop-opacity=".5"/><stop offset="1" stop-color="#0176d3" stop-opacity="0"/></linearGradient>
-              <linearGradient id="gm2" gradientUnits="userSpaceOnUse" x1="8" y1="0" x2="330" y2="0"><stop offset="0" stop-color="#0176d3" stop-opacity=".8"/><stop offset="1" stop-color="#0176d3" stroke-opacity="0" stop-opacity="0"/></linearGradient>
-            </defs>
-            <g stroke="#0176d3" stroke-width="1.2"><line x1="150" y1="30" x2="150" y2="212"/><line x1="240" y1="30" x2="240" y2="212"/><line x1="330" y1="30" x2="330" y2="212"/></g>
-            <g class="sv-blue" font-size="10"><text x="154" y="12">1 · harness</text><text x="244" y="12">2 · cascades</text><text x="382" y="12" text-anchor="end">3 · specialized</text></g>
-            <text class="sv-navy" font-size="10.5" x="8" y="24">Today: one episode</text>
-            <g>
-              <path d="M8,40.0 C24,40.0 32,44.2 48,44.2 C64,44.2 72,39.3 88,39.3 C90,39.3 90,36.1 92,36.1" fill="none" stroke="url(#gm0)" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M8,57.0 C24,57.0 32,57.5 48,57.5 C64,57.5 72,53.6 88,53.6 C98,53.6 102,56.2 112,56.2" fill="none" stroke="url(#gm0)" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M8,74.0 C24,74.0 32,70.2 48,70.2 C64,70.2 72,71.9 88,71.9 C104,71.9 112,76.0 128,76.0 C132,76.0 134,73.8 138,73.8" fill="none" stroke="url(#gm0)" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M8,91.0 C24,91.0 32,88.1 48,88.1 C64,88.1 72,92.5 88,92.5 C104,92.5 112,91.5 128,91.5 C144,91.5 152,89.1 168,89.1 C171,89.1 173,92.5 176,92.5" fill="none" stroke="url(#gm1)" stroke-width="2.1" stroke-linecap="round"/>
-              <path d="M8,108.0 C24,108.0 32,108.8 48,108.8 C64,108.8 72,109.1 88,109.1 C104,109.1 112,106.3 128,106.3 C144,106.3 152,108.5 168,108.5 C182,108.5 190,111.7 204,111.7" fill="none" stroke="url(#gm1)" stroke-width="2.1" stroke-linecap="round"/>
-              <path d="M8,125.0 C24,125.0 32,126.8 48,126.8 C64,126.8 72,123.4 88,123.4 C104,123.4 112,124.6 128,124.6 C144,124.6 152,129.0 168,129.0 C184,129.0 192,126.3 208,126.3 C218,126.3 222,120.7 232,120.7" fill="none" stroke="url(#gm1)" stroke-width="2.1" stroke-linecap="round"/>
-              <path d="M8,142.0 C24,142.0 32,141.1 48,141.1 C64,141.1 72,140.8 88,140.8 C104,140.8 112,145.3 128,145.3 C144,145.3 152,144.3 168,144.3 C184,144.3 192,138.6 208,138.6 C224,138.6 232,139.1 248,139.1 C254,139.1 256,143.9 262,143.9" fill="none" stroke="url(#gm2)" stroke-width="2.4" stroke-linecap="round"/>
-              <path d="M8,159.0 C24,159.0 32,157.4 48,157.4 C64,157.4 72,161.3 88,161.3 C104,161.3 112,162.0 128,162.0 C144,162.0 152,156.7 168,156.7 C184,156.7 192,155.6 208,155.6 C224,155.6 232,160.1 248,160.1 C264,160.1 272,160.6 288,160.6 C293,160.6 295,157.6 300,157.6" fill="none" stroke="url(#gm2)" stroke-width="2.4" stroke-linecap="round"/>
-              <path d="M8,176.0 C24,176.0 32,177.5 48,177.5 C64,177.5 72,179.8 88,179.8 C104,179.8 112,174.7 128,174.7 C144,174.7 152,171.8 168,171.8 C184,171.8 192,176.3 208,176.3 C224,176.3 232,178.2 248,178.2 C264,178.2 272,174.9 288,174.9 C304,174.9 312,175.7 328,175.7 C344,175.7 352,179.4 368,179.4 C374,179.4 376,176.6 382,176.6" fill="none" stroke="#0176d3" stroke-width="2.8" stroke-linecap="round"/>
-              <path d="M8,193.0 C24,193.0 32,197.0 48,197.0 C64,197.0 72,193.0 88,193.0 C104,193.0 112,188.7 128,188.7 C144,188.7 152,192.2 168,192.2 C184,192.2 192,195.4 208,195.4 C224,195.4 232,192.6 248,192.6 C264,192.6 272,192.0 288,192.0 C304,192.0 312,195.9 328,195.9 C344,195.9 352,194.8 368,194.8 C374,194.8 376,189.2 382,189.2" fill="none" stroke="#0176d3" stroke-width="2.8" stroke-linecap="round"/>
-            </g>
-            <line x1="8" y1="224" x2="382" y2="224" stroke="#8c8c8c" stroke-width="1"/>
-            <g class="sv-label" font-size="9.5"><text x="8" y="238">minutes</text><text x="150" y="238" text-anchor="middle">hour</text><text x="240" y="238" text-anchor="middle">day</text><text x="330" y="238" text-anchor="middle">week</text><text x="384" y="238" text-anchor="end">beyond</text></g>
-          </svg>
-        </div>
-      </div>
-
-      <!-- THESIS -->
-      <div class="hrow">
-        <div class="hl">
-          <h3>Thesis</h3>
-          <p>Two trends converge. Where they meet, the last mile is reliability over long horizons, won per vertical: many specialized agents, one per business.</p>
-        </div>
-        <div class="hf">
-          <svg class="desktop" viewBox="0 0 920 150" role="img" aria-label="Two trends, better and cheaper open models and longer task horizons, converge on one point; from it a fan of specialized agents spreads out, one per business.">
-            <defs>
-              <marker id="aht" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </marker>
-            </defs>
-            <path d="M10,34 C140,38 270,58 400,76" fill="none" stroke="#032d60" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M10,122 C140,118 270,96 400,76" fill="none" stroke="#032d60" stroke-width="2.2" stroke-linecap="round"/>
-            <text class="sv-navy" font-size="14.5" x="10" y="20">Trend 2: task horizons grow as autonomy grows</text>
-            <text class="sv-navy" font-size="14.5" x="10" y="142">Trend 1: open models get better and cheaper</text>
-            <circle cx="400" cy="76" r="5.5" fill="#0176d3"/>
-            <text class="sv-blue" font-size="13" x="400" y="118" text-anchor="middle">the last mile: reliability, per vertical</text>
-            <g fill="none" stroke="#0176d3" stroke-width="1.6" stroke-linecap="round">
-              <path d="M406,76 C520,76 560,26 680,26" marker-end="url(#aht)"/>
-              <path d="M406,76 C520,76 560,51 680,51" marker-end="url(#aht)"/>
-              <path d="M406,76 C520,76 560,76 680,76" marker-end="url(#aht)"/>
-              <path d="M406,76 C520,76 560,101 680,101" marker-end="url(#aht)"/>
-              <path d="M406,76 C520,76 560,126 680,126" marker-end="url(#aht)"/>
-            </g>
-            <g class="sv-ink" font-size="14">
-              <text x="692" y="31">a sales agent for one company</text><text x="692" y="56">a service agent for another</text>
-              <text x="692" y="81">a finance agent, a legal agent</text><text x="692" y="106">an operations agent</text>
-              <text x="692" y="131">one per business, per vertical</text>
-            </g>
-          </svg>
-          <svg class="mobile" viewBox="0 0 390 150" role="img" aria-label="Two trends converge; from the meeting point specialized agents fan out, one per business.">
-            <defs>
-              <marker id="ahtm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </marker>
-            </defs>
-            <text class="sv-navy" font-size="11" x="8" y="14">longer horizons</text>
-            <text class="sv-navy" font-size="11" x="8" y="146">better, cheaper open models</text>
-            <path d="M8,26 C60,30 120,60 170,76" fill="none" stroke="#032d60" stroke-width="2" stroke-linecap="round"/>
-            <path d="M8,128 C60,124 120,94 170,76" fill="none" stroke="#032d60" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="170" cy="76" r="4.5" fill="#0176d3"/>
-            <g fill="none" stroke="#0176d3" stroke-width="1.5" stroke-linecap="round">
-              <path d="M175,76 C230,76 240,28 290,28" marker-end="url(#ahtm)"/><path d="M175,76 C230,76 240,52 290,52" marker-end="url(#ahtm)"/>
-              <path d="M175,76 C230,76 240,76 290,76" marker-end="url(#ahtm)"/><path d="M175,76 C230,76 240,100 290,100" marker-end="url(#ahtm)"/>
-              <path d="M175,76 C230,76 240,124 290,124" marker-end="url(#ahtm)"/>
-            </g>
-            <g class="sv-ink" font-size="11"><text x="300" y="32">sales</text><text x="300" y="56">service</text><text x="300" y="80">finance</text><text x="300" y="104">legal</text><text x="300" y="128">operations</text></g>
-          </svg>
-        </div>
-      </div>
-
-      <!-- PROGRAM -->
-      <div class="hrow">
-        <div class="hl">
-          <h3>Program</h3>
-          <p>Three tracks on one foundation: the harness, the environment, the algorithm. Capability first, then cost.</p>
-        </div>
-        <div class="trow">
-          <div class="cell"><div class="k">Track · the harness</div><h4>The agent architecture, optimized; also the baseline</h4><p><b>Buys us</b> the horizon before any training, and one yardstick for every result</p></div>
-          <div class="cell"><div class="k">Track · the environment</div><h4>State control, more learning per rollout</h4><p><b>Buys us</b> affordable long-horizon training; longer tasks come in reach</p></div>
-          <div class="cell"><div class="k">Track · the algorithm</div><h4>Less variance in the learning signal</h4><p><b>Buys us</b> the success rate over the last mile, the primary measure</p></div>
-        </div>
-      </div>
-
-    </div>
-  </header>
-</div>
-
-<!-- TEAM -->
-<section id="team">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2><span class="pre">Team</span>one group, three tracks.</h2>
-    </div>
-    <div class="team">
-      <figure><img src="assets/team/bo.jpg" alt="Bo Pang"><figcaption><b>Bo Pang</b><span>Senior Researcher</span></figcaption></figure>
-      <figure><a href="https://koulanurag.dev/"><img src="assets/team/anurag.jpg" alt="Anurag Koul"></a><figcaption><b><a href="https://koulanurag.dev/">Anurag Koul</a></b><span>Lead Research Scientist</span></figcaption></figure>
-      <figure><img src="assets/team/egor.jpg" alt="Egor Pakhomov"><figcaption><b>Egor Pakhomov</b><span>Principal Applied Scientist</span></figcaption></figure>
-      <figure><img src="assets/team/hongjun.jpg" alt="Hongjun Liu"><figcaption><b>Hongjun Liu</b><span>Research Intern</span></figcaption></figure>
-      <figure><a href="https://raihanjoty.github.io/"><img src="assets/team/shafiq.jpg" alt="Shafiq Joty"></a><figcaption><b><a href="https://raihanjoty.github.io/">Shafiq Joty</a></b><span>Senior Research Director</span></figcaption></figure>
-      <figure><a href="https://eriknijkamp.com/"><img src="assets/team/erik.jpg" alt="Erik Nijkamp"></a><figcaption><b><a href="https://eriknijkamp.com/">Erik Nijkamp</a></b><span>Research Director</span></figcaption></figure>
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap hero-inner">
+    <p class="eyebrow" data-reveal>Salesforce AI Research · A research program</p>
+    <h1 data-reveal style="--d:.1s">Long-Horizon RL<br>for Enterprise Agents</h1>
+    <p class="lede" data-reveal style="--d:.2s">Agents that pursue one goal for days, and the foundation that trains them.</p>
+    <div class="cta" data-reveal style="--d:.3s">
+      <a class="btn btn-cue" href="#goal">Learn more<svg class="cue" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v13M6 12.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
   </div>
-</section>
+  <div class="hero-lines" aria-hidden="true">
+    <svg class="traj hero-traj" viewBox="0 0 920 150" preserveAspectRatio="none"></svg>
+  </div>
+</header>
 
-<!-- THESIS -->
-<section id="thesis" class="band">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2><span class="pre">Thesis</span>two trends converge, and the last mile opens up.</h2>
-    </div>
-    <div class="grid2">
-      <div class="box">
-        <div class="tag">Trend 1</div>
-        <h3>Open models keep getting better and cheaper</h3>
-        <p class="muted">Base capability is commoditizing and proliferating across many open-weight models.</p>
-      </div>
-      <div class="box">
-        <div class="tag">Trend 2</div>
-        <h3>Task horizons keep extending as autonomy grows</h3>
-        <p class="muted">Enterprise work is long-horizon: many steps, many tools, hours to days.</p>
-      </div>
-    </div>
+<!-- TIMELINE -->
+<main class="timeline wrap" id="timeline">
+  <div class="spine" aria-hidden="true"><div class="spine-fill"><span class="spine-tip"></span></div></div>
 
-    <figure class="fig" style="margin-top:20px" aria-label="Two trends converge; from the meeting point specialized agents fan out, one per workflow and business.">
-          <svg class="desktop" viewBox="0 0 920 150" role="img" aria-label="Two trends, better and cheaper open models and longer task horizons, converge on one point; from it a fan of specialized agents spreads out, one per business.">
-            <defs>
-              <marker id="aht2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </marker>
-            </defs>
-            <path d="M10,34 C140,38 270,58 400,76" fill="none" stroke="#032d60" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M10,122 C140,118 270,96 400,76" fill="none" stroke="#032d60" stroke-width="2.2" stroke-linecap="round"/>
-            <text class="sv-navy" font-size="14.5" x="10" y="20">Trend 2: task horizons grow as autonomy grows</text>
-            <text class="sv-navy" font-size="14.5" x="10" y="142">Trend 1: open models get better and cheaper</text>
-            <circle cx="400" cy="76" r="5.5" fill="#0176d3"/>
-            <text class="sv-blue" font-size="13" x="400" y="118" text-anchor="middle">the last mile: reliability, per vertical</text>
-            <g fill="none" stroke="#0176d3" stroke-width="1.6" stroke-linecap="round">
-              <path d="M406,76 C520,76 560,26 680,26" marker-end="url(#aht2)"/>
-              <path d="M406,76 C520,76 560,51 680,51" marker-end="url(#aht2)"/>
-              <path d="M406,76 C520,76 560,76 680,76" marker-end="url(#aht2)"/>
-              <path d="M406,76 C520,76 560,101 680,101" marker-end="url(#aht2)"/>
-              <path d="M406,76 C520,76 560,126 680,126" marker-end="url(#aht2)"/>
+  <!-- 01 GOAL -->
+  <section class="seg" id="goal">
+    <div class="rail" aria-hidden="true"><span class="chev"></span><span class="node"></span></div>
+    <div class="body">
+      <p class="kicker" data-reveal>01 · Goal</p>
+      <h2 class="statement" data-reveal style="--d:.05s">Long-horizon autonomy.</h2>
+      <p class="support" data-reveal style="--d:.1s">Agents that pursue one goal for days, with a human attending once a day.</p>
+      <div class="pair" data-reveal style="--d:.2s">
+        <div><span class="lbl">The goal</span><strong>Long-horizon autonomy</strong><span class="sub">one goal, pursued for days</span></div>
+        <div class="arrow-h" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M2 12h42M36 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><span class="lbl">The means</span><strong>Specialized intelligence</strong><span class="sub">small open models, post-trained per business</span></div>
+      </div>
+      <div class="pair measures" data-reveal style="--d:.3s">
+        <div><span class="lbl">Primary measure</span><strong>Success rate over long horizons</strong><span class="sub">pass<sup>k</sup>; without a high rate, nothing else matters</span></div>
+        <div aria-hidden="true"></div>
+        <div><span class="lbl">Secondary measure</span><strong>Cost</strong><span class="sub">the same success rate at a fraction of the compute</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 VISION -->
+  <section class="seg" id="vision">
+    <div class="rail" aria-hidden="true"><span class="chev"></span><span class="node"></span></div>
+    <div class="body">
+      <p class="kicker" data-reveal>02 · Vision</p>
+      <h2 class="statement" data-reveal style="--d:.05s">The horizon grows one unlock at a time.</h2>
+      <div class="vision">
+        <div class="steps">
+          <div class="step on" data-state="0">
+            <span class="lbl">Today</span>
+            <h3>Runs end within an hour.</h3>
+            <p>The context window fills. The process dies. No one is checking a step, so errors compound.</p>
+          </div>
+          <div class="step" data-state="1">
+            <span class="lbl">Unlock 1 · the harness</span>
+            <h3>A day.</h3>
+            <p>State in files, ticks, resume. The agent architecture buys the horizon before any training.</p>
+          </div>
+          <div class="step" data-state="2">
+            <span class="lbl">Unlock 2 · cascaded intelligence</span>
+            <h3>A week.</h3>
+            <p>Compression and cheap labor. Judgment on top, routine work below, attention where it is needed.</p>
+          </div>
+          <div class="step" data-state="3">
+            <span class="lbl">Unlock 3 · specialized intelligence</span>
+            <h3>Weeks, and beyond.</h3>
+            <p>Reinforcement learning per vertical. The last mile is reliability, and the runs are still going.</p>
+          </div>
+        </div>
+        <figure class="chart s0" id="vision-chart" role="img" aria-label="Trajectories grow longer with each unlock. Today most runs end within an hour. The harness unlocks a day; cascaded intelligence a week; specialized intelligence weeks and beyond.">
+          <svg viewBox="0 0 920 480">
+            <g class="marks" stroke="#0176d3" stroke-width="1.6" stroke-dasharray="4 8">
+              <line class="u1" x1="380" y1="66" x2="380" y2="374"/>
+              <line class="u2" x1="560" y1="66" x2="560" y2="374"/>
+              <line class="u3" x1="740" y1="66" x2="740" y2="374"/>
             </g>
-            <g class="sv-ink" font-size="14">
-              <text x="692" y="31">a sales agent for one company</text><text x="692" y="56">a service agent for another</text>
-              <text x="692" y="81">a finance agent, a legal agent</text><text x="692" y="106">an operations agent</text>
-              <text x="692" y="131">one per business, per vertical</text>
+            <text class="sv-blue utext u1" font-size="21" x="390" y="52">Unlock 1</text>
+            <text class="sv-blue utext u2" font-size="21" x="570" y="52">Unlock 2</text>
+            <text class="sv-blue utext u3" font-size="21" x="750" y="52">Unlock 3</text>
+            <text class="sv-navy today" font-size="21" x="10" y="52">Today</text>
+            <text class="sv-blue still u3" font-size="16" x="905" y="368" text-anchor="end">still running</text>
+            <g class="traj" id="vision-traj"></g>
+            <line x1="10" y1="392" x2="905" y2="392" stroke="#b8c4d2" stroke-width="1.2"/>
+            <g stroke="#b8c4d2" stroke-width="1.2"><line x1="380" y1="388" x2="380" y2="396"/><line x1="560" y1="388" x2="560" y2="396"/><line x1="740" y1="388" x2="740" y2="396"/></g>
+            <g class="sv-ink" font-size="20">
+              <text x="10" y="428">minutes</text><text x="380" y="428" text-anchor="middle">an hour</text><text x="560" y="428" text-anchor="middle">a day</text><text x="740" y="428" text-anchor="middle">a week</text><text class="far" x="905" y="428" text-anchor="end">beyond</text>
+            </g>
+            <g class="sv-label" font-size="15">
+              <text x="380" y="454" text-anchor="middle">context window, process</text><text x="560" y="454" text-anchor="middle">attention, cost</text><text x="740" y="454" text-anchor="middle">errors compound</text>
             </g>
           </svg>
-          <svg class="mobile" viewBox="0 0 390 150" role="img" aria-label="Two trends converge; from the meeting point specialized agents fan out, one per business.">
-            <defs>
-              <marker id="ahtm2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </marker>
-            </defs>
-            <text class="sv-navy" font-size="11" x="8" y="14">longer horizons</text>
-            <text class="sv-navy" font-size="11" x="8" y="146">better, cheaper open models</text>
-            <path d="M8,26 C60,30 120,60 170,76" fill="none" stroke="#032d60" stroke-width="2" stroke-linecap="round"/>
-            <path d="M8,128 C60,124 120,94 170,76" fill="none" stroke="#032d60" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="170" cy="76" r="4.5" fill="#0176d3"/>
-            <g fill="none" stroke="#0176d3" stroke-width="1.5" stroke-linecap="round">
-              <path d="M175,76 C230,76 240,28 290,28" marker-end="url(#ahtm2)"/><path d="M175,76 C230,76 240,52 290,52" marker-end="url(#ahtm2)"/>
-              <path d="M175,76 C230,76 240,76 290,76" marker-end="url(#ahtm2)"/><path d="M175,76 C230,76 240,100 290,100" marker-end="url(#ahtm2)"/>
-              <path d="M175,76 C230,76 240,124 290,124" marker-end="url(#ahtm2)"/>
-            </g>
-            <g class="sv-ink" font-size="11"><text x="300" y="32">sales</text><text x="300" y="56">service</text><text x="300" y="80">finance</text><text x="300" y="104">legal</text><text x="300" y="128">operations</text></g>
-          </svg>
-      <figcaption class="muted" style="font-size:15px;margin-top:12px;line-height:1.5"><b style="color:var(--ink)">Where they meet.</b> Cheap, capable open models on one side, ever longer tasks on the other: the opening is to close the last mile with specialized intelligence, and with it reach reliable long-horizon autonomy.</figcaption>
-    </figure>
-    <div class="box tint open">
-      <h3>The opportunity: close the last mile with specialized intelligence</h3>
-      <div class="points">
-        <p><b>The gap.</b> Frontier models degrade at long horizons; reliability, not single-shot capability, is missing.</p>
-        <p><b>The fix.</b> Each workflow's steps, tools and knowledge, absorbed into the model rather than fetched each step.</p>
-        <p><b>The conversion.</b> An open base model becomes a specialist per workflow: cheap, highly reliable, and compounding.</p>
+        </figure>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- PROGRAM -->
-<section id="program">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2><span class="pre">Program</span>three levers unlock the capability first, then the cost.</h2>
+  <!-- 03 THESIS -->
+  <section class="seg" id="thesis">
+    <div class="rail" aria-hidden="true"><span class="chev"></span><span class="node"></span></div>
+    <div class="body">
+      <p class="kicker" data-reveal>03 · Thesis</p>
+      <h2 class="statement" data-reveal style="--d:.05s">Two trends converge.</h2>
+      <p class="support" data-reveal style="--d:.1s">Open models keep getting better and cheaper. Task horizons keep extending as autonomy grows. Where they meet, the last mile is reliability, won per vertical.</p>
+      <figure class="fig thesis" data-reveal style="--d:.2s">
+        <svg viewBox="0 0 920 160" role="img" aria-label="Two trends converge on one point; from it a fan of specialized agents spreads out, one per business.">
+          <defs>
+            <marker id="aht" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+          <path class="trend" pathLength="1" d="M10,40 C140,44 270,64 400,82" fill="none" stroke="#032d60" stroke-width="2.2" stroke-linecap="round"/>
+          <path class="trend" pathLength="1" d="M10,128 C140,124 270,102 400,82" fill="none" stroke="#032d60" stroke-width="2.2" stroke-linecap="round"/>
+          <text class="sv-navy" font-size="14" x="10" y="26">Trend 2 · task horizons grow as autonomy grows</text>
+          <text class="sv-navy" font-size="14" x="10" y="150">Trend 1 · open models get better and cheaper</text>
+          <circle class="meet" cx="400" cy="82" r="5.5" fill="#0176d3"/>
+          <text class="sv-blue late" font-size="13" x="400" y="124" text-anchor="middle">the last mile: reliability, per vertical</text>
+          <g class="fan" fill="none" stroke="#0176d3" stroke-width="1.6" stroke-linecap="round">
+            <path pathLength="1" d="M406,82 C520,82 560,32 680,32" marker-end="url(#aht)"/>
+            <path pathLength="1" d="M406,82 C520,82 560,57 680,57" marker-end="url(#aht)"/>
+            <path pathLength="1" d="M406,82 C520,82 560,82 680,82" marker-end="url(#aht)"/>
+            <path pathLength="1" d="M406,82 C520,82 560,107 680,107" marker-end="url(#aht)"/>
+            <path pathLength="1" d="M406,82 C520,82 560,132 680,132" marker-end="url(#aht)"/>
+          </g>
+          <g class="sv-ink late" font-size="14">
+            <text x="692" y="37">a sales agent for one company</text><text x="692" y="62">a service agent for another</text>
+            <text x="692" y="87">a finance agent, a legal agent</text><text x="692" y="112">an operations agent</text>
+            <text x="692" y="137">one per business, per vertical</text>
+          </g>
+        </svg>
+        <div class="m-fig m-thesis" aria-hidden="true">
+          <div class="m-trends"><span>Trend 1 · open models get better and cheaper</span><span>Trend 2 · task horizons grow as autonomy grows</span></div>
+          <div class="m-meet"><i></i>the last mile: reliability, per vertical</div>
+          <ul class="m-fan"><li>a sales agent for one company</li><li>a service agent for another</li><li>a finance agent, a legal agent</li><li>an operations agent</li><li>one per business, per vertical</li></ul>
+        </div>
+      </figure>
     </div>
-    <div class="steps">
-      <div class="box">
-        <div class="k">First</div>
-        <h3>Unlock the capability</h3>
-        <p>Methods that train open models on long trajectories: less variance in the learning signal, tighter control of environment state. Measured as reliability over long horizons, pass<sup>k</sup>.</p>
-      </div>
-      <div class="arrow" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="box">
-        <div class="k">Then</div>
-        <h3>Deliver it at lower compute</h3>
-        <p>The same methods make training and inference cheaper: more learning per rollout, shorter reasoning traces, a harness optimized for long horizons that also says honestly what a prompt alone can reach.</p>
-      </div>
-      <div class="arrow" aria-hidden="true"><svg viewBox="0 0 18 18"><path d="M3 9h12M10 4l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="box tint">
-        <div class="k">Result</div>
-        <h3>Reliable specialized intelligence</h3>
-        <p>Small open models that pursue one goal for days, on their vertical, at a fraction of frontier cost: the means to long-horizon autonomy.</p>
-      </div>
-    </div>
+  </section>
 
-    <figure class="fig" style="margin-top:20px" aria-labelledby="hict-cap">
-      <svg class="desktop" viewBox="0 0 1200 400" role="img" aria-label="Three tracks, harness, environment, algorithm, feed one foundation, which yields reliable specialized intelligence, the means to long-horizon autonomy.">
-        <defs>
-          <marker id="ahp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
-            <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </marker>
-        </defs>
-        <g>
-          <rect x="20" y="30" width="340" height="88" rx="8" fill="#fff" stroke="#e5e5e5"/>
-          <text class="sv-blue" font-size="13.5" x="42" y="56">Inference harness</text>
-          <text class="sv-title" font-size="19" x="42" y="81">The harness</text>
-          <text class="sv-label" font-size="14.5" x="42" y="104">the architecture, optimized; also the baseline</text>
-          <rect x="20" y="156" width="340" height="88" rx="8" fill="#fff" stroke="#e5e5e5"/>
-          <text class="sv-blue" font-size="13.5" x="42" y="182">Efficient environments</text>
-          <text class="sv-title" font-size="19" x="42" y="207">The environment</text>
-          <text class="sv-label" font-size="14.5" x="42" y="230">state control, more learning per rollout</text>
-          <rect x="20" y="282" width="340" height="88" rx="8" fill="#fff" stroke="#e5e5e5"/>
-          <text class="sv-blue" font-size="13.5" x="42" y="308">Learning algorithms</text>
-          <text class="sv-title" font-size="19" x="42" y="333">The algorithm</text>
-          <text class="sv-label" font-size="14.5" x="42" y="356">less variance in the learning signal</text>
-        </g>
-        <rect x="490" y="70" width="280" height="260" rx="8" fill="#eef4ff" stroke="#aacbff"/>
-        <text class="sv-navy" font-size="22" x="514" y="110">One foundation</text>
-        <g class="sv-ink" font-size="15.5"><text x="514" y="146">environment</text><text x="514" y="172">× algorithm</text><text x="514" y="198">× inference</text></g>
-        <line x1="514" y1="220" x2="746" y2="220" stroke="#aacbff"/>
-        <g class="sv-label" font-size="14.5"><text x="514" y="250">one evaluation anchor</text><text x="514" y="274">one set of repositories</text><text x="514" y="298">one foundation that transfers</text></g>
-        <rect x="900" y="104" width="280" height="192" rx="8" fill="#fff" stroke="#0176d3" stroke-width="1.5"/>
-        <text class="sv-navy" font-size="21" x="924" y="144">Reliable specialized</text>
-        <text class="sv-navy" font-size="21" x="924" y="170">intelligence</text>
-        <g class="sv-label" font-size="14.5"><text x="924" y="208">small open models that pursue</text><text x="924" y="230">one goal for days, per business,</text><text x="924" y="252">at a fraction of frontier cost:</text><text x="924" y="274">the means to long-horizon autonomy</text></g>
-        <g fill="none" stroke="#0176d3" stroke-width="1.6">
-          <path d="M360,74 C430,74 420,150 488,150" marker-end="url(#ahp)"/>
-          <path d="M360,200 L488,200" marker-end="url(#ahp)"/>
-          <path d="M360,326 C430,326 420,250 488,250" marker-end="url(#ahp)"/>
-          <path d="M770,200 L898,200" marker-end="url(#ahp)"/>
-        </g>
-        <text class="sv-label" font-size="14" x="834" y="190" text-anchor="middle">yields</text>
-      </svg>
-      <svg class="mobile" viewBox="0 0 390 540" role="img" aria-label="Three tracks feed one foundation, which yields reliable specialized intelligence.">
-        <defs>
-          <marker id="ahpm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-            <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </marker>
-        </defs>
-        <rect x="16" y="6" width="358" height="66" rx="8" fill="#fff" stroke="#e5e5e5"/>
-        <text class="sv-blue" font-size="11" x="30" y="26">Inference harness</text><text class="sv-title" font-size="15" x="30" y="46">The harness</text><text class="sv-label" font-size="12" x="30" y="64">the architecture, optimized; also the baseline</text>
-        <rect x="16" y="84" width="358" height="66" rx="8" fill="#fff" stroke="#e5e5e5"/>
-        <text class="sv-blue" font-size="11" x="30" y="104">Efficient environments</text><text class="sv-title" font-size="15" x="30" y="124">The environment</text><text class="sv-label" font-size="12" x="30" y="142">state control, more learning per rollout</text>
-        <rect x="16" y="162" width="358" height="66" rx="8" fill="#fff" stroke="#e5e5e5"/>
-        <text class="sv-blue" font-size="11" x="30" y="182">Learning algorithms</text><text class="sv-title" font-size="15" x="30" y="202">The algorithm</text><text class="sv-label" font-size="12" x="30" y="220">less variance in the learning signal</text>
-        <path d="M195,228 L195,258" fill="none" stroke="#0176d3" stroke-width="1.5" marker-end="url(#ahpm)"/>
-        <rect x="16" y="262" width="358" height="112" rx="8" fill="#eef4ff" stroke="#aacbff"/>
-        <text class="sv-navy" font-size="17" x="30" y="290">One foundation</text>
-        <text class="sv-ink" font-size="13" x="30" y="314">environment × algorithm × inference</text>
-        <text class="sv-label" font-size="12" x="30" y="336">one evaluation anchor, one set of repositories,</text><text class="sv-label" font-size="12" x="30" y="354">one foundation that transfers</text>
-        <path d="M195,374 L195,404" fill="none" stroke="#0176d3" stroke-width="1.5" marker-end="url(#ahpm)"/>
-        <rect x="16" y="408" width="358" height="112" rx="8" fill="#fff" stroke="#0176d3" stroke-width="1.3"/>
-        <text class="sv-navy" font-size="16" x="30" y="436">Reliable specialized intelligence</text>
-        <text class="sv-label" font-size="12" x="30" y="462">small open models that pursue one goal for days,</text><text class="sv-label" font-size="12" x="30" y="480">per business: the means to long-horizon autonomy</text>
-      </svg>
-      <figcaption id="hict-cap" class="muted" style="font-size:15px;margin-top:14px;line-height:1.5"><b style="color:var(--ink)">How it comes together.</b> Three tracks build one foundation; the foundation yields reliable specialized intelligence; that intelligence is the means to long-horizon autonomy.</figcaption>
-    </figure>
-    <div class="grid3 lev">
-      <div class="box gray"><div class="k">The harness</div><h3>Architecture and measurement</h3><p>The agent's inference-time architecture, levels, delegation, compaction, optimized for long horizons; it also sets the honest baseline.</p><p class="buys"><b>Buys us</b> the horizon before any training, and one yardstick for every result.</p></div>
-      <div class="box gray"><div class="k">The environment</div><h3>State control and efficiency</h3><p>Resettable environments that skip the solved prefix and return more learning per rollout, with the algorithm trained inside.</p><p class="buys"><b>Buys us</b> affordable long-horizon training: the same nodes teach more, longer tasks come in reach.</p></div>
-      <div class="box gray"><div class="k">The algorithm</div><h3>Variance</h3><p>Critic-based credit assignment and corrected asynchronous training, so that long trajectories teach instead of destabilise.</p><p class="buys"><b>Buys us</b> the success rate over the last mile, the primary measure.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- TRACKS -->
-<section id="tracks" class="band">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2><span class="pre">Tracks</span>three levers on one loop: the harness acts, the environment answers, the algorithm learns.</h2>
-    </div>
-
-    <figure class="fig" aria-labelledby="loop-cap">
-      <svg class="desktop" viewBox="0 0 1200 470" role="img" aria-label="One loop. The harness runs the agent for days; the environment returns rollouts with more learning in each; the learning algorithm updates the policy with low variance and hands it back to the harness. The loop is measured as reliability over long horizons and yields specialized, cheap, long-horizon intelligence.">
-        <defs>
-          <marker id="ahl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
-            <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </marker>
-        </defs>
-        <!-- harness (top) -->
-        <rect x="400" y="30" width="400" height="118" rx="8" fill="#eef4ff" stroke="#aacbff"/>
-        <text class="sv-blue" font-size="13.5" x="422" y="58">Inference harness · first</text>
-        <text class="sv-title" font-size="20" x="422" y="86">The harness runs the agent</text>
-        <text class="sv-label" font-size="14.5" x="422" y="110">levels by time scale, delegation, compaction;</text>
-        <text class="sv-label" font-size="14.5" x="422" y="130">it also sets the honest baseline</text>
-        <!-- environment (bottom right) -->
-        <rect x="760" y="330" width="400" height="118" rx="8" fill="#fff" stroke="#e5e5e5"/>
-        <text class="sv-blue" font-size="13.5" x="782" y="358">Efficient environments</text>
-        <text class="sv-title" font-size="20" x="782" y="386">The environment answers</text>
-        <text class="sv-label" font-size="14.5" x="782" y="410">resettable, state-controlled: skip the solved prefix,</text>
-        <text class="sv-label" font-size="14.5" x="782" y="430">more learning in every rollout</text>
-        <!-- algorithm (bottom left) -->
-        <rect x="40" y="330" width="400" height="118" rx="8" fill="#fff" stroke="#e5e5e5"/>
-        <text class="sv-blue" font-size="13.5" x="62" y="358">Learning algorithms</text>
-        <text class="sv-title" font-size="20" x="62" y="386">The algorithm learns</text>
-        <text class="sv-label" font-size="14.5" x="62" y="410">critic-based credit assignment, corrected asynchronous</text>
-        <text class="sv-label" font-size="14.5" x="62" y="430">training: long trajectories teach, with low variance</text>
-        <!-- the loop -->
-        <g fill="none" stroke="#0176d3" stroke-width="1.8">
-          <path d="M800,120 C920,140 960,220 960,326" marker-end="url(#ahl)"/>
-          <path d="M760,400 C640,400 560,400 444,400" marker-end="url(#ahl)"/>
-          <path d="M240,330 C240,220 280,140 396,110" marker-end="url(#ahl)"/>
-        </g>
-        <g class="sv-ink" font-size="14.5">
-          <text x="952" y="232" text-anchor="start">acts, for days</text>
-          <text x="600" y="388" text-anchor="middle">rollouts, more signal in each</text>
-          <text x="236" y="232" text-anchor="end">updated policy</text>
-        </g>
-        <!-- the measure, in the middle -->
-        <text class="sv-navy" font-size="17" x="600" y="236" text-anchor="middle">One loop, one foundation</text>
-        <text class="sv-label" font-size="14" x="600" y="260" text-anchor="middle">measured by the harness as success rate over long horizons, pass^k</text>
-      </svg>
-      <svg class="mobile" viewBox="0 0 390 396" role="img" aria-label="One loop: the harness runs the agent, the environment answers with rollouts, the algorithm learns and hands the policy back.">
-        <defs>
-          <marker id="ahlm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-            <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          </marker>
-        </defs>
-        <rect x="16" y="6" width="358" height="78" rx="8" fill="#eef4ff" stroke="#aacbff"/>
-        <text class="sv-blue" font-size="11" x="30" y="26">Inference harness · first</text>
-        <text class="sv-title" font-size="15" x="30" y="46">The harness runs the agent</text>
-        <text class="sv-label" font-size="11.5" x="30" y="64">levels, delegation, compaction; the honest baseline</text>
-        <path d="M195,86 L195,114" fill="none" stroke="#0176d3" stroke-width="1.5" marker-end="url(#ahlm)"/>
-        <text class="sv-label" font-size="11" x="204" y="104">acts, for days</text>
-        <rect x="16" y="118" width="358" height="78" rx="8" fill="#fff" stroke="#e5e5e5"/>
-        <text class="sv-blue" font-size="11" x="30" y="138">Efficient environments</text>
-        <text class="sv-title" font-size="15" x="30" y="158">The environment answers</text>
-        <text class="sv-label" font-size="11.5" x="30" y="176">resettable, state-controlled; more learning per rollout</text>
-        <path d="M195,198 L195,226" fill="none" stroke="#0176d3" stroke-width="1.5" marker-end="url(#ahlm)"/>
-        <text class="sv-label" font-size="11" x="204" y="216">rollouts, more signal in each</text>
-        <rect x="16" y="230" width="358" height="78" rx="8" fill="#fff" stroke="#e5e5e5"/>
-        <text class="sv-blue" font-size="11" x="30" y="250">Learning algorithms</text>
-        <text class="sv-title" font-size="15" x="30" y="270">The algorithm learns</text>
-        <text class="sv-label" font-size="11.5" x="30" y="288">critic-based, low variance; hands the policy back up</text>
-        <path d="M195,310 L195,338" fill="none" stroke="#0176d3" stroke-width="1.5" marker-end="url(#ahlm)"/>
-        <text class="sv-label" font-size="11" x="204" y="328">updated policy, back to the harness</text>
-        <text class="sv-navy" font-size="13" x="195" y="366" text-anchor="middle">One loop, one foundation</text>
-        <text class="sv-label" font-size="11" x="195" y="384" text-anchor="middle">measured as reliability over long horizons</text>
-      </svg>
-      <figcaption id="loop-cap" class="muted" style="font-size:15px;margin-top:16px;line-height:1.5"><b style="color:var(--ink)">Research hypothesis.</b> Reducing variance in the learning signal and raising the information per rollout in the environment, measured by an honest, optimized harness, yields models that stay reliable over long horizons at a fraction of frontier cost, and a foundation that transfers.</figcaption>
-    </figure>
-
-    <div class="grid3 tracks3" id="papers">
-      <div class="tcol">
-        <div class="box head">
-          <div class="tag">Inference harness</div>
+  <!-- 05 PROGRAM -->
+  <section class="seg" id="program">
+    <div class="rail" aria-hidden="true"><span class="chev"></span><span class="node"></span></div>
+    <div class="body">
+      <p class="kicker" data-reveal>04 · Program</p>
+      <h2 class="statement" data-reveal style="--d:.05s">Three levers, one foundation.</h2>
+      <p class="support" data-reveal style="--d:.1s">Capability first, then cost. Every result is measured on the same yardstick.</p>
+      <div class="levers">
+        <div class="lever" data-reveal style="--d:.15s">
+          <span class="num">1</span>
           <h3>The harness</h3>
-          <p>The agent architecture at inference time, levels, delegation, compaction, optimized for long horizons; also the honest baseline.</p>
-          <dl class="buys"><dt>Goal</dt><dd>an agent that pursues one goal for days with no one watching</dd><dt>Buys us</dt><dd>the horizon, before any training, and one yardstick for every result</dd></dl>
+          <p>The agent architecture, optimized. Also the honest baseline.</p>
+          <p class="buys"><b>Buys us</b> the horizon before any training, and one yardstick for every result.</p>
         </div>
-        <div class="plist">
-          <div class="box paper">
-            <a href="assets/architecture-paper.pdf"><img class="thumb" src="assets/thumbs/architecture-paper.png" alt="" loading="lazy"></a>
-            <div>
-              <h4><a href="assets/architecture-paper.pdf">An Architecture for Autonomous Long-Horizon Agents</a></h4>
-              <p>A hierarchy of levels by time scale lets an agent pursue one goal for days with a human attending once a day. The harness the program builds on.</p>
-              <div class="meta">Erik Nijkamp. Draft.<a href="assets/architecture-paper.pdf">PDF</a></div>
-            </div>
-          </div>
-          <div class="box paper">
-            <a href="assets/papers/egor-parsing-the-stream-2609.01466.pdf"><img class="thumb" src="assets/thumbs/egor-parsing-the-stream-2609.01466.png" alt="" loading="lazy"></a>
-            <div>
-              <h4><a href="assets/papers/egor-parsing-the-stream-2609.01466.pdf">Parsing the Stream: A Live Trace Model for Long-Horizon Agents and Their Observers</a></h4>
-              <p>One live state, folded from the trace, serves the agent and its observer over a long run.</p>
-              <div class="meta">Egor Pakhomov, Erik Nijkamp. arXiv:2609.01466.<a href="assets/papers/egor-parsing-the-stream-2609.01466.pdf">PDF</a></div>
-            </div>
-          </div>
-          <div class="box paper">
-            <a href="assets/papers/egor-attributing-agent-failures.pdf"><img class="thumb" src="assets/thumbs/egor-attributing-agent-failures.png" alt="" loading="lazy"></a>
-            <div>
-              <h4><a href="assets/papers/egor-attributing-agent-failures.pdf">Attributing Agent Failures to Their History Needs an Executed Counterfactual</a></h4>
-              <p>Attributing a long-horizon failure to its history needs an executed counterfactual, not a transcript label.</p>
-              <div class="meta">Egor Pakhomov. Under submission.<a href="assets/papers/egor-attributing-agent-failures.pdf">PDF</a></div>
-            </div>
-          </div>
-          <div class="box paper">
-            <a href="assets/papers/egor-bookkeeping-composition.pdf"><img class="thumb" src="assets/thumbs/egor-bookkeeping-composition.png" alt="" loading="lazy"></a>
-            <div>
-              <h4><a href="assets/papers/egor-bookkeeping-composition.pdf">Bookkeeping, Composition, or Unreachable Gold?</a></h4>
-              <p>What a memory benchmark's conflict-resolution score measures, read against a frozen last-write rule.</p>
-              <div class="meta">Egor Pakhomov. Under submission.<a href="assets/papers/egor-bookkeeping-composition.pdf">PDF</a></div>
-            </div>
-          </div>
-          <div class="box paper">
-            <a href="assets/papers/egor-history-compaction.pdf"><img class="thumb" src="assets/thumbs/egor-history-compaction.png" alt="" loading="lazy"></a>
-            <div>
-              <h4><a href="assets/papers/egor-history-compaction.pdf">Does an Agent's History Tell You When Compaction Will Hurt?</a></h4>
-              <p>A pre-registered negative result: recent history predicts compaction harm only weakly.</p>
-              <div class="meta">Egor Pakhomov. Under submission.<a href="assets/papers/egor-history-compaction.pdf">PDF</a></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tcol">
-        <div class="box head">
-          <div class="tag">Efficient environments</div>
+        <div class="lever" data-reveal style="--d:.25s">
+          <span class="num">2</span>
           <h3>The environment</h3>
-          <p>Resettable environments with the algorithm trained inside, so each rollout returns more learning; a memory benchmark anchors evaluation.</p>
-          <dl class="buys"><dt>Goal</dt><dd>control over state, more learning per rollout</dd><dt>Buys us</dt><dd>long-horizon training that is affordable: the same nodes teach more, and longer tasks come in reach</dd></dl>
+          <p>State control. More learning per rollout.</p>
+          <p class="buys"><b>Buys us</b> affordable long-horizon training. Longer tasks come in reach.</p>
         </div>
-        <div class="plist">
-          <div class="box paper">
-            <div class="thumb soon" aria-hidden="true">coming soon</div>
-            <div>
-              <h4>Resettable Environments for Long-Horizon RL</h4>
-              <p>State-reset environments that skip the solved prefix, so every rollout is cheaper and more informative.</p>
-              <div class="meta">Anurag Koul. Coming soon.</div>
-            </div>
-          </div>
-          <div class="box paper">
-            <div class="thumb soon" aria-hidden="true">benchmark</div>
-            <div>
-              <h4>Long-horizon memory benchmark</h4>
-              <p>The shared benchmark all three levers measure against.</p>
-              <div class="meta">Hongjun Liu. Benchmark.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tcol">
-        <div class="box head">
-          <div class="tag">Learning algorithms</div>
+        <div class="lever" data-reveal style="--d:.35s">
+          <span class="num">3</span>
           <h3>The algorithm</h3>
-          <p>Critic-based RL that cuts variance so long trajectories teach; a from-scratch reproduction of a published method is the baseline.</p>
-          <dl class="buys"><dt>Goal</dt><dd>long trajectories teach instead of destabilise</dd><dt>Buys us</dt><dd>the success rate over the last mile, the primary measure</dd></dl>
-        </div>
-        <div class="plist">
-          <div class="box paper">
-            <a href="assets/papers/bo-surprisal-advantage-gating.pdf"><img class="thumb" src="assets/thumbs/bo-surprisal-advantage-gating.png" alt="" loading="lazy"></a>
-            <div>
-              <h4><a href="assets/papers/bo-surprisal-advantage-gating.pdf">Surprisal-Advantage Gating for LLM Reasoning</a></h4>
-              <p>Gates each policy-gradient term by advantage times surprisal, so exploration survives and gradient flows to unsolved problems. The variance lever at the level of the gradient.</p>
-              <div class="meta">Bo Pang. Preprint, under review.<a href="assets/papers/bo-surprisal-advantage-gating.pdf">PDF</a></div>
-            </div>
-          </div>
+          <p>Less variance in the learning signal.</p>
+          <p class="buys"><b>Buys us</b> the success rate over the last mile, the primary measure.</p>
         </div>
       </div>
     </div>
+  </section>
 
-</div>
-  </div>
-</section>
+  <!-- 06 LOOP -->
+  <section class="seg" id="loop">
+    <div class="rail" aria-hidden="true"><span class="chev"></span><span class="node"></span></div>
+    <div class="body">
+      <p class="kicker" data-reveal>05 · One loop</p>
+      <h2 class="statement" data-reveal style="--d:.05s">The harness acts. The environment answers. The algorithm learns.</h2>
+      <figure class="fig loop" data-reveal style="--d:.15s">
+        <svg viewBox="0 0 920 420" role="img" aria-label="One loop. The harness runs the agent for days; the environment returns rollouts; the algorithm updates the policy and hands it back to the harness.">
+          <defs>
+            <marker id="ahl" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+              <path d="M0,0.5 L9,5 L0,9.5" fill="none" stroke="#0176d3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+          <g class="lnode n1">
+            <rect x="310" y="20" width="300" height="88" rx="14" fill="#fff" stroke="#dbe3ec"/>
+            <text class="sv-blue" font-size="12.5" x="334" y="48">1 · Inference harness</text>
+            <text class="sv-title" font-size="19" x="334" y="76">The harness runs the agent</text>
+          </g>
+          <g class="lnode n2">
+            <rect x="600" y="300" width="300" height="88" rx="14" fill="#fff" stroke="#dbe3ec"/>
+            <text class="sv-blue" font-size="12.5" x="624" y="328">2 · Efficient environments</text>
+            <text class="sv-title" font-size="19" x="624" y="356">The environment answers</text>
+          </g>
+          <g class="lnode n3">
+            <rect x="20" y="300" width="300" height="88" rx="14" fill="#fff" stroke="#dbe3ec"/>
+            <text class="sv-blue" font-size="12.5" x="44" y="328">3 · Learning algorithms</text>
+            <text class="sv-title" font-size="19" x="44" y="356">The algorithm learns</text>
+          </g>
+          <g class="larrows" fill="none" stroke="#0176d3" stroke-width="1.8">
+            <path class="a1" pathLength="1" d="M612,80 C720,100 760,190 760,296" marker-end="url(#ahl)"/>
+            <path class="a2" pathLength="1" d="M598,344 C500,344 420,344 324,344" marker-end="url(#ahl)"/>
+            <path class="a3" pathLength="1" d="M160,298 C160,190 210,110 306,82" marker-end="url(#ahl)"/>
+          </g>
+          <g class="sv-ink" font-size="13.5">
+            <text class="l1" x="770" y="200">acts, for days</text>
+            <text class="l2" x="460" y="332" text-anchor="middle">rollouts, more signal in each</text>
+            <text class="l3" x="150" y="200" text-anchor="end">updated policy</text>
+          </g>
+          <text class="sv-navy lmid" font-size="16" x="460" y="210" text-anchor="middle">One loop, one foundation</text>
+          <text class="sv-label lmid" font-size="13" x="460" y="232" text-anchor="middle">measured as pass<tspan baseline-shift="super" font-size="10">k</tspan> over long horizons</text>
+        </svg>
+        <ol class="m-fig m-loop" aria-hidden="true">
+          <li><span class="lbl">1 · Inference harness</span><b>The harness runs the agent</b></li>
+          <li class="m-arrow">acts, for days</li>
+          <li><span class="lbl">2 · Efficient environments</span><b>The environment answers</b></li>
+          <li class="m-arrow">rollouts, more signal in each</li>
+          <li><span class="lbl">3 · Learning algorithms</span><b>The algorithm learns</b></li>
+          <li class="m-arrow">updated policy, back to the harness</li>
+        </ol>
+        <figcaption>Reducing variance in the learning signal and raising the information per rollout, measured by an honest, optimized harness, yields models that stay reliable over long horizons at a fraction of frontier cost.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 07 PAPERS -->
+  <section class="seg" id="papers">
+    <div class="rail" aria-hidden="true"><span class="chev"></span><span class="node"></span></div>
+    <div class="body">
+      <p class="kicker" data-reveal>06 · Papers</p>
+      <h2 class="statement" data-reveal style="--d:.05s">What we have written so far.</h2>
+      <div class="papers" data-reveal style="--d:.15s">
+        <ol class="plist" id="plist">
+          <li class="paper">
+            <a class="thumb" href="assets/architecture-paper.pdf"><img src="assets/thumbs/architecture-paper.png" alt="" loading="lazy"></a>
+            <div>
+              <span class="lbl">The harness</span>
+              <h4><a href="assets/architecture-paper.pdf">An Architecture for Autonomous Long-Horizon Agents</a></h4>
+              <p>A hierarchy of levels by time scale lets an agent pursue one goal for days with a human attending once a day.</p>
+              <span class="meta">Erik Nijkamp · Draft</span>
+            </div>
+          </li>
+          <li class="paper">
+            <a class="thumb" href="assets/papers/bo-surprisal-advantage-gating.pdf"><img src="assets/thumbs/bo-surprisal-advantage-gating.png" alt="" loading="lazy"></a>
+            <div>
+              <span class="lbl">The algorithm</span>
+              <h4><a href="assets/papers/bo-surprisal-advantage-gating.pdf">Surprisal-Advantage Gating for LLM Reasoning</a></h4>
+              <p>Gates each policy-gradient term by advantage times surprisal, so exploration survives and gradient flows to unsolved problems.</p>
+              <span class="meta">Bo Pang · Preprint, under review</span>
+            </div>
+          </li>
+        </ol>
+        <div class="more" id="more" hidden>
+          <ol class="plist" start="3">
+            <li class="paper">
+              <a class="thumb" href="assets/papers/egor-parsing-the-stream-2609.01466.pdf"><img src="assets/thumbs/egor-parsing-the-stream-2609.01466.png" alt="" loading="lazy"></a>
+              <div>
+                <span class="lbl">The harness</span>
+                <h4><a href="assets/papers/egor-parsing-the-stream-2609.01466.pdf">Parsing the Stream: A Live Trace Model for Long-Horizon Agents and Their Observers</a></h4>
+                <p>One live state, folded from the trace, serves the agent and its observer over a long run.</p>
+                <span class="meta">Egor Pakhomov, Erik Nijkamp · arXiv:2609.01466</span>
+              </div>
+            </li>
+            <li class="paper">
+              <a class="thumb" href="assets/papers/egor-attributing-agent-failures.pdf"><img src="assets/thumbs/egor-attributing-agent-failures.png" alt="" loading="lazy"></a>
+              <div>
+                <span class="lbl">The harness</span>
+                <h4><a href="assets/papers/egor-attributing-agent-failures.pdf">Attributing Agent Failures to Their History Needs an Executed Counterfactual</a></h4>
+                <p>Attributing a long-horizon failure to its history needs an executed counterfactual, not a transcript label.</p>
+                <span class="meta">Egor Pakhomov · Under submission</span>
+              </div>
+            </li>
+            <li class="paper">
+              <a class="thumb" href="assets/papers/egor-bookkeeping-composition.pdf"><img src="assets/thumbs/egor-bookkeeping-composition.png" alt="" loading="lazy"></a>
+              <div>
+                <span class="lbl">The harness</span>
+                <h4><a href="assets/papers/egor-bookkeeping-composition.pdf">Bookkeeping, Composition, or Unreachable Gold?</a></h4>
+                <p>What a memory benchmark's conflict-resolution score measures, read against a frozen last-write rule.</p>
+                <span class="meta">Egor Pakhomov · Under submission</span>
+              </div>
+            </li>
+            <li class="paper">
+              <a class="thumb" href="assets/papers/egor-history-compaction.pdf"><img src="assets/thumbs/egor-history-compaction.png" alt="" loading="lazy"></a>
+              <div>
+                <span class="lbl">The harness</span>
+                <h4><a href="assets/papers/egor-history-compaction.pdf">Does an Agent's History Tell You When Compaction Will Hurt?</a></h4>
+                <p>A pre-registered negative result: recent history predicts compaction harm only weakly.</p>
+                <span class="meta">Egor Pakhomov · Under submission</span>
+              </div>
+            </li>
+            <li class="paper">
+              <div class="thumb soon" aria-hidden="true">soon</div>
+              <div>
+                <span class="lbl">The environment</span>
+                <h4>Resettable Environments for Long-Horizon RL</h4>
+                <p>State-reset environments that skip the solved prefix, so every rollout is cheaper and more informative.</p>
+                <span class="meta">Anurag Koul · Coming soon</span>
+              </div>
+            </li>
+            <li class="paper">
+              <div class="thumb soon" aria-hidden="true">bench</div>
+              <div>
+                <span class="lbl">The environment</span>
+                <h4>Long-horizon memory benchmark</h4>
+                <p>The shared benchmark all three levers measure against.</p>
+                <span class="meta">Hongjun Liu · Benchmark</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <button class="btn ghost" id="more-btn" aria-expanded="false" aria-controls="more">See all 8 papers</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 TEAM -->
+  <section class="seg last" id="team">
+    <div class="rail" aria-hidden="true"><span class="chev"></span><span class="node"></span></div>
+    <div class="body">
+      <p class="kicker" data-reveal>07 · Team</p>
+      <h2 class="statement" data-reveal style="--d:.05s">One group, three tracks.</h2>
+      <div class="team" data-reveal style="--d:.15s">
+        <figure><img src="assets/team/bo.jpg" alt="Bo Pang"><figcaption><b>Bo Pang</b><span>Senior Researcher</span></figcaption></figure>
+        <figure><a href="https://koulanurag.dev/"><img src="assets/team/anurag.jpg" alt="Anurag Koul"></a><figcaption><b><a href="https://koulanurag.dev/">Anurag Koul</a></b><span>Lead Research Scientist</span></figcaption></figure>
+        <figure><img src="assets/team/egor.jpg" alt="Egor Pakhomov"><figcaption><b>Egor Pakhomov</b><span>Principal Applied Scientist</span></figcaption></figure>
+        <figure><img src="assets/team/hongjun.jpg" alt="Hongjun Liu"><figcaption><b>Hongjun Liu</b><span>Research Intern</span></figcaption></figure>
+        <figure><a href="https://raihanjoty.github.io/"><img src="assets/team/shafiq.jpg" alt="Shafiq Joty"></a><figcaption><b><a href="https://raihanjoty.github.io/">Shafiq Joty</a></b><span>Senior Research Director</span></figcaption></figure>
+        <figure><a href="https://eriknijkamp.com/"><img src="assets/team/erik.jpg" alt="Erik Nijkamp"></a><figcaption><b><a href="https://eriknijkamp.com/">Erik Nijkamp</a></b><span>Research Director</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+</main>
 
 <footer>
   <div class="wrap">
     <a class="brand" href="#top"><img src="assets/salesforce.svg" alt="Salesforce"><span><strong>Long-Horizon RL for Enterprise Agents</strong><small>Salesforce AI Research · 2026</small></span></a>
-    <nav><a href="#team">Team</a><a href="#thesis">Thesis</a><a href="#program">Program</a><a href="#tracks">Tracks</a><a href="#papers">Papers</a></nav>
+    <nav><a href="#goal">Goal</a><a href="#vision">Vision</a><a href="#thesis">Thesis</a><a href="#program">Program</a><a href="#papers">Papers</a><a href="#team">Team</a></nav>
   </div>
 </footer>
 
+<script src="main.js" defer></script>
 </body>
 </html>
