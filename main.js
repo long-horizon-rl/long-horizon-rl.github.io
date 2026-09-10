@@ -204,11 +204,12 @@
     // is lit with it, and the block's chart follows
     groups.forEach((g) => {
       let best = -1;
-      g.steps.forEach((st, i) => { if (st.getBoundingClientRect().top <= vh * 0.5) best = i; });
+      // the lone Why step is centred in its stage, so it lights as soon as it is well inside the viewport
+      g.steps.forEach((st, i) => { if (st.getBoundingClientRect().top <= vh * (st.classList.contains('first') ? 0.85 : 0.5)) best = i; });
       const focus = best >= 0 ? g.steps[best].dataset.state : null;
       g.steps.forEach((st) => st.classList.toggle('on', st.dataset.state === focus));
       setGroupState(g, Number(focus) || 0);
-      if (!g.armed && g.steps[0] && g.steps[0].getBoundingClientRect().top < vh * 0.7) armGroup(g);
+      if (!g.armed && g.el.getBoundingClientRect().top < vh * 0.75) armGroup(g);
       else if (g.armed && g.el.getBoundingClientRect().top > vh) resetGroup(g);
     });
   }

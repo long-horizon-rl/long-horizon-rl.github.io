@@ -118,8 +118,13 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 /* vision */
 .statement.wide{max-width:none;font-size:clamp(30px,4.2vw,58px)}
 .ladder{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+/* the Why block is a stage: it fills the viewport below the heading, the chip + box sit centred
+   against the chart, and the connector runs from the box down to the next heading */
+.vision.why{min-height:calc(100svh - 230px);align-items:center;margin-top:16px}
+.vision.why .chart{position:static}
 .steps.lead{display:flex;flex-direction:column;align-self:stretch}
-.vconn.sep-arrow{flex:1;height:auto;min-height:88px;margin:22px 0 0 12px}
+.steps.lead::before{content:"";flex:1 1 0}
+.vconn.sep-arrow{flex:1 1 0;height:auto;min-height:88px;margin:22px 0 0 12px}
 .statement.sep{margin-top:18px}
 .rung{display:inline-flex;align-items:center;gap:9px;padding:8px 16px 8px 8px;border-radius:999px;border:1px solid var(--rule-2);background:#fff;font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
 .rung .num{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700}
@@ -241,6 +246,9 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   .levers{grid-template-columns:1fr;gap:28px}
   .team{grid-template-columns:repeat(3,minmax(0,1fr))}
   .vision{grid-template-columns:1fr;gap:0;margin-right:0}
+  .vision.why{min-height:calc(100svh - 64px);grid-template-rows:auto 1fr;align-items:stretch}
+  .vision.why .chart{position:sticky}
+  .steps.lead::before{display:none}
   .chart{position:sticky;top:64px;background:var(--bg);padding:12px 0;z-index:2;order:-1}
   .chart svg{width:100%}
   .step{padding-bottom:10vh}
