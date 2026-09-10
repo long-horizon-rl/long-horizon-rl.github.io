@@ -151,14 +151,17 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .step.bad li::before{background:#d9483b}
 .vision{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:56px;align-items:start;margin-top:28px;margin-right:min(0px,calc((var(--max) - 100vw)/2 + var(--pad)))}
 .steps{display:grid}
-.step{display:flex;flex-direction:column;justify-content:flex-start;padding-bottom:14vh;opacity:.22;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateY(6px)}
+.step{display:flex;flex-direction:column;justify-content:flex-start;opacity:.22;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateY(6px)}
 .step.on{opacity:1;transform:none}
-.step.first{padding-bottom:0}
-.step:last-child{padding-bottom:6vh}
+/* Steps 1-3 each own a viewport-sized slot with the text centred in it, so whichever step is
+   in focus sits level with the chart, which is pinned at the centre of the visible area.
+   The arrow hangs above the text (zero flow height) so it does not skew the centring. */
+.vision:not(.why) .step{min-height:var(--slot,clamp(520px,72vh,880px));justify-content:center}
+.vision:not(.why) .step > .vconn{margin-top:-74px}
 .step h3{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em;line-height:1.05}
 .step p{margin-top:12px;color:var(--muted);font-size:17px;max-width:32ch}
-.chart{position:sticky;top:calc(50vh - 150px);padding:0}
-.chart svg{width:75%;height:auto;display:block}
+.chart{position:sticky;top:var(--chart-top,calc(50vh - 150px));padding:0}
+.chart svg{width:75%;max-width:660px;height:auto;display:block}
 .chart .u1,.chart .u2,.chart .u3{opacity:0;transition:opacity .6s var(--ease) .3s}
 .chart.s1 .u1,.chart.s2 .u1,.chart.s2 .u2,.chart.s3 .u1,.chart.s3 .u2,.chart.s3 .u3{opacity:1}
 .traj path{fill:none;stroke-linecap:round;stroke-dasharray:1 2;transition:stroke-dashoffset 1.5s var(--ease),stroke .6s,stroke-width .6s}
@@ -256,8 +259,9 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   .vision.why .chart{position:sticky}
   .vconn.lead-arrow{flex:none;height:64px;margin-top:6px}
   .chart{position:sticky;top:64px;background:var(--bg);padding:12px 0;z-index:2;order:-1}
-  .chart svg{width:100%}
-  .step{padding-bottom:10vh}
+  .chart svg{width:100%;max-width:none}
+  .vision:not(.why) .step{min-height:0;justify-content:flex-start;padding:0 0 10vh}
+  .vision:not(.why) .step > .vconn{margin-top:0}
 }
 @media (max-width:640px){
   :root{--pad:20px;--rail:28px;--seg-pad:14vh}

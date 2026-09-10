@@ -213,10 +213,38 @@
       else if (g.armed && g.el.getBoundingClientRect().top > vh) resetGroup(g);
     });
   }
+  // vision layout (desktop): pin each chart at the centre of the area below the header, and give
+  // the last step just enough room below its text that the chart starts scrolling away with it
+  // right after the two are level, instead of the text drifting up alone
+  const narrow = window.matchMedia('(max-width:960px)');
+  const topBar = document.querySelector('.top');
+  function layoutVision() {
+    const vh = window.innerHeight, head = topBar ? topBar.getBoundingClientRect().bottom : 0;
+    groups.forEach((g) => {
+      const svg = g.chart.querySelector('svg');
+      const last = g.steps[g.steps.length - 1];
+      if (narrow.matches || g.el.classList.contains('why')) {
+        g.chart.style.removeProperty('--chart-top');
+        last.style.padding = ''; last.style.minHeight = ''; last.style.justifyContent = '';
+        return;
+      }
+      const h = svg.getBoundingClientRect().height;
+      g.chart.style.setProperty('--chart-top', Math.round(head + (vh - head - h) / 2) + 'px');
+      // last step: same centring as its siblings, but the slot ends h/2 below the text centre
+      last.style.padding = ''; last.style.minHeight = ''; last.style.justifyContent = '';
+      const slot = last.getBoundingClientRect().height;
+      const kids = last.children, c = kids[kids.length - 1].getBoundingClientRect().bottom - kids[1].getBoundingClientRect().top;
+      const padTop = Math.max(0, (slot - c) / 2);
+      last.style.minHeight = '0'; last.style.justifyContent = 'flex-start';
+      last.style.padding = `${Math.round(padTop)}px 0 ${Math.round(Math.max(24, h / 2 - c / 2 + 24))}px`;
+    });
+  }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+  function onResize() { layoutVision(); onScroll(); }
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  window.addEventListener('load', update);
+  window.addEventListener('resize', onResize);
+  window.addEventListener('load', onResize);
+  layoutVision();
   update();
 
   /* ---------- papers: see more ---------- */
