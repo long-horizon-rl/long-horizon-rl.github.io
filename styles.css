@@ -117,27 +117,31 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 
 /* vision */
 .statement.wide{max-width:none;font-size:clamp(30px,4.2vw,58px)}
-.ladder{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
-.rung{display:inline-flex;align-items:center;gap:9px;padding:8px 16px 8px 8px;border-radius:999px;border:1px solid var(--rule-2);background:#fff;font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.ladder{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:16px;max-width:400px}
+.rung{display:flex;flex-wrap:wrap;row-gap:2px;align-items:center;gap:9px;padding:8px 14px 8px 8px;border-radius:999px;border:1px solid var(--rule-2);background:#fff;font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
 .rung .num{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700}
 .rung svg{width:16px;height:16px;color:var(--blue)}
-.rung .to{display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+.rung .num{flex:none}
+.rung .name{white-space:nowrap}
+.rung .to{display:inline-flex;align-items:center;gap:9px;white-space:nowrap;margin-left:auto}
 .rung .buy{color:var(--blue-dark)}
-.step.first{min-height:0;justify-content:flex-start;padding-bottom:34vh}
 .lbl.leadin{display:inline-flex;align-self:flex-start;color:var(--blue-dark);margin-bottom:0;padding:7px 14px;border:1px solid var(--rule-2);border-radius:999px;background:#fff}
-.vconn{position:relative;height:64px;width:24px;color:var(--blue);margin:0 0 8px 12px}
+.step .lbl:not(.leadin){margin-top:2px}
+.vconn{position:relative;height:64px;width:24px;color:var(--blue);margin:0 0 10px 12px;flex:none}
 .vconn::before{content:"";position:absolute;left:9px;top:0;bottom:6px;border-left:2px solid currentColor}
 .vconn svg{position:absolute;left:0;bottom:0;width:20px;height:12px}
 .step ul{list-style:none;padding:0;margin-top:14px;display:grid;gap:8px;max-width:32ch}
 .step li{position:relative;padding-left:20px;color:var(--muted);font-size:17px;line-height:1.4}
 .step li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;border-radius:50%;background:var(--blue)}
-.step.bad ul{margin-top:18px;padding:14px 18px 14px 16px;border:1.5px solid #e4a59d;border-radius:10px;background:#fff8f7;max-width:34ch}
+.step.bad ul{margin-top:14px;padding:14px 18px 14px 16px;border:1.5px solid #e4a59d;border-radius:10px;background:#fff8f7;max-width:34ch}
 .step.bad li{color:#a8261c}
 .step.bad li::before{background:#d9483b}
-.vision{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:56px;align-items:start;margin-top:28px;margin-right:min(0px,calc((var(--max) - 100vw)/2 + var(--pad)))}
+.vision{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:56px;align-items:start;margin-top:28px;margin-right:min(0px,calc((var(--max) - 100vw)/2 + var(--pad)))}
 .steps{display:grid}
-.step{min-height:72vh;display:flex;flex-direction:column;justify-content:center;opacity:.22;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateY(6px)}
+.step{display:flex;flex-direction:column;justify-content:flex-start;padding-bottom:14vh;opacity:.22;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateY(6px)}
 .step.on{opacity:1;transform:none}
+.step.first,.step.lead{padding-bottom:0}
+.step:last-child{padding-bottom:6vh}
 .step h3{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em;line-height:1.05}
 .step p{margin-top:12px;color:var(--muted);font-size:17px;max-width:32ch}
 .chart{position:sticky;top:calc(50vh - 200px);padding:0}
@@ -231,18 +235,15 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   .team{grid-template-columns:repeat(3,minmax(0,1fr))}
   .vision{grid-template-columns:1fr;gap:0;margin-right:0}
   .chart{position:sticky;top:64px;background:var(--bg);padding:12px 0;z-index:2;order:-1}
-  .step{min-height:56vh}
+  .step{padding-bottom:10vh}
 }
 @media (max-width:640px){
   :root{--pad:20px;--rail:28px;--seg-pad:14vh}
   body{font-size:16px}
   .top nav{display:none}
   .hero{padding:100px 0 70px}
-  .ladder{gap:8px}
-  .rung{width:100%;font-size:14.5px;padding:7px 14px 7px 7px;flex-wrap:wrap;row-gap:2px}
-  .rung .num{flex:none}
-  .rung .name{white-space:nowrap}
-  .rung .to{margin-left:auto}
+  .ladder{max-width:none}
+  .rung{font-size:14.5px;padding:7px 14px 7px 7px}
   .flow.chain,.flow.measures{grid-template-columns:28px minmax(0,1fr);gap:8px}
   .elbow::before{left:5px}
   .flow .arrow-h,.flow .card:not(:nth-child(2)){grid-column:2}

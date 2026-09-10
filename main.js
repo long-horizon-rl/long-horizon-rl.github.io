@@ -149,16 +149,16 @@
 
     // vision steps: nearest to the viewport center gets focus and sets the chart state
     if (steps.length) {
-      let best = 0, bestD = Infinity;
-      steps.forEach((st, i) => {
-        const r = st.getBoundingClientRect(), c = r.top + r.height / 2 - vh * 0.5;
-        const d = Math.abs(c);
-        if (d < bestD) { bestD = d; best = i; }
-      });
-      steps.forEach((st, i) => st.classList.toggle('on', i === best));
-      setVisionState(Number(steps[best].dataset.state) || 0);
+      // blocks are top-anchored and joined by arrows: the last block whose top has
+      // crossed the viewport centre is the one in focus
+      let best = 0;
+      steps.forEach((st, i) => { if (st.getBoundingClientRect().top <= vh * 0.5) best = i; });
+      // every block that belongs to the focused chart state is lit together
+      const focus = steps[best].dataset.state;
+      steps.forEach((st) => st.classList.toggle('on', st.dataset.state === focus));
+      setVisionState(Number(focus) || 0);
       // emit the trajectories once "Let's understand" has moved up past the viewport centre
-      if (!visionArmed && leadin && leadin.getBoundingClientRect().top < vh * 0.5) armVision();
+      if (!visionArmed && leadin && leadin.getBoundingClientRect().top < vh * 0.7) armVision();
     }
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
