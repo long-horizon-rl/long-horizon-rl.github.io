@@ -93,7 +93,7 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .flow .card{padding:20px 22px;border-radius:10px;background:var(--bg-2);border:1px solid var(--rule)}
 .flow strong{display:block;font-size:clamp(18px,1.6vw,21px);letter-spacing:-.02em;color:var(--ink);line-height:1.25}
 .flow .sub{display:block;color:var(--muted);margin-top:6px;font-size:15px;line-height:1.45}
-.flow sup{color:var(--blue);font-weight:600}
+.flow .metric{font-weight:500;font-size:.8em;color:var(--blue);letter-spacing:0;white-space:nowrap;margin-left:2px}
 .arrow-h{color:var(--blue);align-self:center;justify-self:center;display:flex;flex-direction:column;align-items:center;gap:2px;width:100%}
 .arrow-h span{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--muted);white-space:nowrap}
 .arrow-h svg{width:48px;display:block}
