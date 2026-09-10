@@ -66,13 +66,16 @@
     // lines stay undrawn (offset 1) until the block's first step approaches; then they
     // are emitted from the y-axis one after another, in grey, and each takes its
     // colour (light red = failed) only once it has terminated
-    paths.forEach((p, i) => {
-      const d = i * STAGGER;
-      p.style.stroke = COLORS.grey;
-      p.style.transitionDelay = reduce ? '0s' : `${d}s, ${d + DRAW}s, ${d + DRAW}s`;
-    });
+    paths.forEach((p) => { p.style.stroke = COLORS.grey; });
+    setDelays(paths);
     return { el, chart, paths, steps: Array.from(el.querySelectorAll('.step')), state: -1, armed: reduce };
   });
+  function setDelays(paths) {
+    paths.forEach((p, i) => {
+      const d = i * STAGGER;
+      p.style.transitionDelay = reduce ? '0s' : `${d}s, ${d + DRAW}s, ${d + DRAW}s`;
+    });
+  }
   function setGroupState(g, s) {
     if (s === g.state) return;
     g.state = s;
@@ -83,6 +86,15 @@
     if (g.armed) return;
     g.armed = true;
     setState(g.paths, Math.max(0, g.state), COLORS, VW);
+  }
+  // scrolling back above a block rewinds its lines, so they roll out again on return
+  function resetGroup(g) {
+    if (!g.armed || reduce) return;
+    g.armed = false;
+    g.paths.forEach((p) => { p.style.transition = 'none'; p.style.strokeDashoffset = '1'; p.style.stroke = COLORS.grey; });
+    void g.el.offsetWidth; // flush so the rewind is instant and the next draw transitions
+    g.paths.forEach((p) => { p.style.transition = ''; });
+    setDelays(g.paths); // the shorthand reset above also cleared the per-line delays
   }
   groups.forEach((g) => setGroupState(g, 0));
 
@@ -153,6 +165,7 @@
       g.steps.forEach((st) => st.classList.toggle('on', st.dataset.state === focus));
       setGroupState(g, Number(focus) || 0);
       if (!g.armed && g.steps[0] && g.steps[0].getBoundingClientRect().top < vh * 0.7) armGroup(g);
+      else if (g.armed && g.el.getBoundingClientRect().top > vh) resetGroup(g);
     });
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
