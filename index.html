@@ -50,13 +50,20 @@
     <div class="body">
       <p class="kicker" data-reveal>01 · Goal</p>
       <h2 class="statement long" data-reveal style="--d:.05s"><em>Long-horizon autonomy,</em> through <em>specialized intelligence.</em></h2>
-      <div class="defs" data-reveal style="--d:.2s">
-        <div><span class="lbl">Long-horizon autonomy</span><strong>Agents that pursue one goal for days.</strong><span class="sub">A human attends once a day, not once a step.</span></div>
-        <div><span class="lbl">Specialized intelligence</span><strong>Small open models, post-trained per business.</strong><span class="sub">One model per business, per vertical.</span></div>
+      <div class="chain-wrap" data-reveal style="--d:.2s">
+        <span class="lbl judged-lbl">From goal to means</span>
+        <div class="flow chain">
+          <div class="elbow" aria-hidden="true"><svg viewBox="0 0 12 20"><path d="M2 2l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="card"><span class="lbl">Long-horizon autonomy</span><strong>One goal, pursued for days.</strong><span class="sub">A human attends once a day, not once a step.</span></div>
+          <div class="arrow-h" aria-hidden="true"><span>which demands</span><svg viewBox="0 0 48 24"><path d="M2 12h42M36 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="card"><span class="lbl">Reliability, in the particular</span><strong>Right for thousands of steps, in one business.</strong><span class="sub">No one catches a wrong step, so errors compound. A general model is reliable in general, not here. And days of frontier steps do not pay.</span></div>
+          <div class="arrow-h" aria-hidden="true"><span>so we build</span><svg viewBox="0 0 48 24"><path d="M2 12h42M36 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="card"><span class="lbl">Specialized intelligence</span><strong>Small open models, post-trained per business.</strong><span class="sub">Specialization buys the last mile of reliability. Small buys the cost.</span></div>
+        </div>
       </div>
       <div class="judged" data-reveal style="--d:.3s">
         <span class="lbl judged-lbl">Judged by</span>
-        <div class="measures">
+        <div class="flow measures">
           <div class="elbow" aria-hidden="true"><svg viewBox="0 0 12 20"><path d="M2 2l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="card"><span class="lbl">Primary measure</span><strong>Success rate over long horizons</strong><span class="sub">pass<sup>k</sup>; without a high rate, nothing else matters.</span></div>
           <div class="arrow-h" aria-hidden="true"><svg viewBox="0 0 48 24"><path d="M2 12h42M36 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
