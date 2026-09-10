@@ -119,8 +119,8 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .rung .to{display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
 .rung .buy{color:var(--blue-dark)}
 .step.first{min-height:0;justify-content:flex-start;padding-bottom:34vh}
-.lbl.leadin{color:var(--blue-dark);margin-bottom:0;padding-left:2px}
-.vconn{position:relative;height:72px;width:24px;color:var(--blue);margin:2px 0 8px}
+.lbl.leadin{display:inline-flex;align-self:flex-start;color:var(--blue-dark);margin-bottom:0;padding:7px 14px;border:1px solid var(--rule-2);border-radius:999px;background:#fff}
+.vconn{position:relative;height:64px;width:24px;color:var(--blue);margin:0 0 8px 12px}
 .vconn::before{content:"";position:absolute;left:9px;top:0;bottom:6px;border-left:2px solid currentColor}
 .vconn svg{position:absolute;left:0;bottom:0;width:20px;height:12px}
 .step.bad .lbl{color:#b3261e}
