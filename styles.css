@@ -103,8 +103,8 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .flow.measures .arrow-h svg{width:56px}
 
 /* handoff: each chapter ends with the question the next one answers */
-.handoff{display:inline-flex;align-items:center;gap:10px;margin-top:64px;color:var(--blue);font-weight:600;font-size:18px;letter-spacing:-.01em;justify-self:start}
-.handoff:hover{color:var(--blue-dark);text-decoration:none}
+.handoff{display:inline-flex;align-items:center;gap:10px;margin-top:64px;padding:13px 20px 13px 24px;border-radius:999px;border:1px solid var(--rule-2);background:#fff;color:var(--blue);font-weight:600;font-size:17px;letter-spacing:-.01em;justify-self:start;transition:background .2s,border-color .2s,transform .2s var(--ease),box-shadow .2s}
+.handoff:hover{color:var(--blue-dark);background:var(--tint);border-color:#cfe0f7;text-decoration:none;transform:translateY(-1px);box-shadow:0 8px 24px rgba(1,118,211,.12)}
 .handoff:hover svg{animation-duration:1s}
 .handoff svg{width:20px;height:20px;animation:cue 1.8s cubic-bezier(.45,0,.55,1) infinite}
 .seg.active .handoff svg{animation-play-state:running}
