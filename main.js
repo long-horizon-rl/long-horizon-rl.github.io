@@ -177,7 +177,14 @@
     if (spine && fill) {
       const r = spine.getBoundingClientRect();
       const top = r.top + y, h = r.height;
-      fill.style.height = Math.max(0, Math.min(h, center - top)) + 'px';
+      // the page cannot scroll far enough for the viewport centre to reach the spine's end, so over
+      // the last stretch of scroll the fill eases ahead of the centre and lands on the end box
+      const maxY = document.documentElement.scrollHeight - vh, rem = Math.max(0, maxY - y), R = vh * 0.6;
+      let target = center - top;
+      if (rem < R) target += Math.max(0, h - (maxY + vh * 0.5 - top)) * (1 - rem / R);
+      const fh = Math.max(0, Math.min(h, target));
+      fill.style.height = fh + 'px';
+      spine.classList.toggle('done', fh >= h - 1);
     }
 
     // active segment: the one containing the viewport center; before the first, none
