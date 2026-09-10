@@ -233,6 +233,7 @@
       if (narrow.matches || g.el.classList.contains('why')) {
         g.chart.style.removeProperty('--chart-top'); g.chart.style.marginTop = '';
         last.style.padding = ''; last.style.minHeight = ''; last.style.justifyContent = '';
+        last.style.scrollMarginTop = ''; last.style.scrollMarginBottom = '';
         return;
       }
       const h = svg.getBoundingClientRect().height;
@@ -248,7 +249,11 @@
       const kids = last.children, c = kids[kids.length - 1].getBoundingClientRect().bottom - kids[1].getBoundingClientRect().top;
       const padTop = Math.max(0, (slot - c) / 2);
       last.style.minHeight = '0'; last.style.justifyContent = 'flex-start';
-      last.style.padding = `${Math.round(padTop)}px 0 ${Math.round(Math.max(24, h / 2 - c / 2 + 24))}px`;
+      const padBot = Math.max(24, h / 2 - c / 2 + 24);
+      last.style.padding = `${Math.round(padTop)}px 0 ${Math.round(padBot)}px`;
+      // its padding is uneven, so widen the snap area to keep the snap centre on the text
+      last.style.scrollMarginTop = Math.round(head + Math.max(0, padBot - padTop)) + 'px';
+      last.style.scrollMarginBottom = Math.round(Math.max(0, padTop - padBot)) + 'px';
     });
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
