@@ -264,6 +264,48 @@
   layoutVision();
   update();
 
+  // Keyboard paging (desktop). Space / PageDown / Shift+Space / PageUp move between the page's
+  // scroll stops (the same elements CSS scroll-snap uses) instead of a raw viewport stride, so
+  // every landing is a designed one: section kicker, the Why stage, the Three-steps heading with
+  // Step 1, then Steps 2 and 3. If the next stop is more than a viewport away, page normally.
+  const stopSel = '.seg .kicker, .vision.why, #vision .statement.sep, .vision:not(.why) .step';
+  function scrollStops() {
+    const vh = window.innerHeight, y = window.scrollY, out = [];
+    document.querySelectorAll(stopSel).forEach((el) => {
+      const cs = getComputedStyle(el), align = cs.scrollSnapAlign.split(' ')[0];
+      if (align !== 'start' && align !== 'center') return;
+      const r = el.getBoundingClientRect();
+      const top = r.top + y - (parseFloat(cs.scrollMarginTop) || 0);
+      const bot = r.bottom + y + (parseFloat(cs.scrollMarginBottom) || 0);
+      out.push(Math.round(align === 'start' ? top : (top + bot) / 2 - vh / 2));
+    });
+    return [...new Set(out)].sort((a, b) => a - b);
+  }
+  function onKey(e) {
+    if (narrow.matches || e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+    const t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(t.tagName))) return;
+    let dir = 0;
+    if (e.key === ' ' || e.key === 'Spacebar') dir = e.shiftKey ? -1 : 1;
+    else if (e.key === 'PageDown') dir = 1;
+    else if (e.key === 'PageUp') dir = -1;
+    if (!dir) return;
+    const y = window.scrollY, vh = window.innerHeight, page = Math.round(vh * 0.85);
+    const maxY = document.documentElement.scrollHeight - vh;
+    const stops = scrollStops();
+    let target;
+    if (dir > 0) {
+      const next = stops.find((s) => s > y + 4);
+      target = next !== undefined && next - y <= vh ? next : y + page;
+    } else {
+      const prev = stops.filter((s) => s < y - 4).pop();
+      target = prev !== undefined && y - prev <= vh ? prev : y - page;
+    }
+    e.preventDefault();
+    window.scrollTo({ top: Math.max(0, Math.min(maxY, target)), behavior: 'smooth' });
+  }
+  window.addEventListener('keydown', onKey);
+
   /* ---------- papers: see more ---------- */
   const more = document.getElementById('more');
   const btn = document.getElementById('more-btn');

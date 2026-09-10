@@ -124,7 +124,7 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .ladder{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 /* the Why block is a stage: it fills the viewport below the heading, the chip + box sit centred
    against the chart, and the connector runs from the box down to the next heading */
-.vision.why{min-height:calc(100svh - 230px);align-items:center;margin-top:16px}
+.vision.why{min-height:calc(100svh - 300px);align-items:center;margin-top:16px}
 .vision.why .chart{position:static}
 .steps.lead{display:flex;flex-direction:column;align-self:stretch}
 /* both connectors stretch: heading -> Why chip, and box -> next heading */
@@ -168,6 +168,8 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 /* the first step's landing is owned by the "Three steps" heading, so heading, ladder and Step 1 all
    sit below the header; the chart is still in flow there, level with Step 1's text */
 #vision .statement.sep{scroll-snap-align:start;scroll-margin-top:86px}
+/* the Why stage is its own stop: lead arrow under the header, heading and ladder at the foot */
+.vision.why{scroll-snap-align:start;scroll-margin-top:67px}
 .vision:not(.why) .step[data-state="1"]{scroll-snap-align:none}
 .vision:not(.why) .step > .vconn{margin-top:-74px}
 .step h3{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em;line-height:1.05}
