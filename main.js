@@ -224,12 +224,17 @@
       const svg = g.chart.querySelector('svg');
       const last = g.steps[g.steps.length - 1];
       if (narrow.matches || g.el.classList.contains('why')) {
-        g.chart.style.removeProperty('--chart-top');
+        g.chart.style.removeProperty('--chart-top'); g.chart.style.marginTop = '';
         last.style.padding = ''; last.style.minHeight = ''; last.style.justifyContent = '';
         return;
       }
       const h = svg.getBoundingClientRect().height;
       g.chart.style.setProperty('--chart-top', Math.round(head + (vh - head - h) / 2) + 'px');
+      // the chart starts level with Step 1's text (not at the top of its column, under the pills),
+      // and only begins to stick once that pair reaches the centre of the viewport
+      const fk = g.steps[0].children, t1 = fk[1].getBoundingClientRect().top;
+      const c1 = fk[fk.length - 1].getBoundingClientRect().bottom - t1;
+      g.chart.style.marginTop = Math.max(0, Math.round(t1 - g.el.getBoundingClientRect().top + c1 / 2 - h / 2)) + 'px';
       // last step: same centring as its siblings, but the slot ends h/2 below the text centre
       last.style.padding = ''; last.style.minHeight = ''; last.style.justifyContent = '';
       const slot = last.getBoundingClientRect().height;
