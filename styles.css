@@ -145,8 +145,8 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .step:last-child{padding-bottom:6vh}
 .step h3{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em;line-height:1.05}
 .step p{margin-top:12px;color:var(--muted);font-size:17px;max-width:32ch}
-.chart{position:sticky;top:calc(50vh - 200px);padding:0}
-.chart svg{width:100%;height:auto}
+.chart{position:sticky;top:calc(50vh - 160px);padding:0}
+.chart svg{width:80%;height:auto;display:block}
 .chart .u1,.chart .u2,.chart .u3{opacity:0;transition:opacity .6s var(--ease) .3s}
 .chart.s1 .u1,.chart.s2 .u1,.chart.s2 .u2,.chart.s3 .u1,.chart.s3 .u2,.chart.s3 .u3{opacity:1}
 .traj path{fill:none;stroke-linecap:round;stroke-dasharray:1 2;transition:stroke-dashoffset 1.5s var(--ease),stroke .6s,stroke-width .6s}
@@ -236,6 +236,7 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   .team{grid-template-columns:repeat(3,minmax(0,1fr))}
   .vision{grid-template-columns:1fr;gap:0;margin-right:0}
   .chart{position:sticky;top:64px;background:var(--bg);padding:12px 0;z-index:2;order:-1}
+  .chart svg{width:100%}
   .step{padding-bottom:10vh}
 }
 @media (max-width:640px){
