@@ -117,8 +117,9 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 
 /* vision */
 .statement.wide{max-width:none;font-size:clamp(30px,4.2vw,58px)}
-.ladder{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:16px;max-width:400px}
-.rung{display:flex;flex-wrap:wrap;row-gap:2px;align-items:center;gap:9px;padding:8px 14px 8px 8px;border-radius:999px;border:1px solid var(--rule-2);background:#fff;font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.ladder{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.statement.sep{margin-top:96px}
+.rung{display:inline-flex;align-items:center;gap:9px;padding:8px 16px 8px 8px;border-radius:999px;border:1px solid var(--rule-2);background:#fff;font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
 .rung .num{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700}
 .rung svg{width:16px;height:16px;color:var(--blue)}
 .rung .num{flex:none}
@@ -140,7 +141,7 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .steps{display:grid}
 .step{display:flex;flex-direction:column;justify-content:flex-start;padding-bottom:14vh;opacity:.22;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateY(6px)}
 .step.on{opacity:1;transform:none}
-.step.first,.step.lead{padding-bottom:0}
+.step.first{padding-bottom:0}
 .step:last-child{padding-bottom:6vh}
 .step h3{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em;line-height:1.05}
 .step p{margin-top:12px;color:var(--muted);font-size:17px;max-width:32ch}
@@ -242,8 +243,9 @@ footer nav a:hover{color:var(--ink);text-decoration:none}
   body{font-size:16px}
   .top nav{display:none}
   .hero{padding:100px 0 70px}
-  .ladder{max-width:none}
-  .rung{font-size:14.5px;padding:7px 14px 7px 7px}
+  .ladder{gap:8px}
+  .statement.sep{margin-top:64px}
+  .rung{width:100%;flex-wrap:wrap;row-gap:2px;font-size:14.5px;padding:7px 14px 7px 7px}
   .flow.chain,.flow.measures{grid-template-columns:28px minmax(0,1fr);gap:8px}
   .elbow::before{left:5px}
   .flow .arrow-h,.flow .card:not(:nth-child(2)){grid-column:2}

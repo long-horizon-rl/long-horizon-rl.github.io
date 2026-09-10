@@ -58,36 +58,33 @@
     requestAnimationFrame(() => requestAnimationFrame(() => setState(paths, 3, { blue: '#0176d3', grey: '#b9c5d3' })));
   }
 
-  // vision: chart states follow the focused step
-  const chart = document.getElementById('vision-chart');
-  const visionGroup = document.getElementById('vision-traj');
-  let visionPaths = [], visionState = -1, visionArmed = reduce;
+  // vision: each .vision block pairs a column of steps with its own chart
   const VW = { short: 3, long: 4.2, far: 5 };
-  if (chart && visionGroup) {
-    visionPaths = buildTraj(visionGroup, { seed: 7, y0: 96, dy: 34, amp: 16 });
-    // lines stay undrawn (offset 1) until the reader moves past "Let's understand";
-    // then they are emitted from the y-axis one after another, in grey, and each
-    // takes its colour (light red = failed) only once it has terminated
-    visionPaths.forEach((p, i) => {
+  const groups = Array.from(document.querySelectorAll('.vision')).map((el) => {
+    const chart = el.querySelector('.chart'), traj = el.querySelector('.traj');
+    const paths = traj ? buildTraj(traj, { seed: 7, y0: 96, dy: 34, amp: 16 }) : [];
+    // lines stay undrawn (offset 1) until the block's first step approaches; then they
+    // are emitted from the y-axis one after another, in grey, and each takes its
+    // colour (light red = failed) only once it has terminated
+    paths.forEach((p, i) => {
       const d = i * STAGGER;
       p.style.stroke = COLORS.grey;
       p.style.transitionDelay = reduce ? '0s' : `${d}s, ${d + DRAW}s, ${d + DRAW}s`;
     });
-    setVisionState(0, true);
+    return { el, chart, paths, steps: Array.from(el.querySelectorAll('.step')), state: -1, armed: reduce };
+  });
+  function setGroupState(g, s) {
+    if (s === g.state) return;
+    g.state = s;
+    if (g.armed) setState(g.paths, s, COLORS, VW);
+    if (g.chart) { g.chart.classList.remove('s0', 's1', 's2', 's3'); g.chart.classList.add('s' + s); }
   }
-  function setVisionState(s, force) {
-    if (s === visionState && !force) return;
-    visionState = s;
-    if (visionArmed) setState(visionPaths, s, COLORS, VW);
-    chart.classList.remove('s0', 's1', 's2', 's3');
-    chart.classList.add('s' + s);
+  function armGroup(g) {
+    if (g.armed) return;
+    g.armed = true;
+    setState(g.paths, Math.max(0, g.state), COLORS, VW);
   }
-  function armVision() {
-    if (visionArmed) return;
-    visionArmed = true;
-    setState(visionPaths, Math.max(0, visionState), COLORS, VW);
-  }
-  const leadin = document.querySelector('.step .leadin');
+  groups.forEach((g) => setGroupState(g, 0));
 
   /* ---------- reveal on entry ---------- */
   const io = new IntersectionObserver((entries) => {
@@ -111,7 +108,6 @@
   const timeline = document.getElementById('timeline');
   const spine = document.querySelector('.spine');
   const fill = document.querySelector('.spine-fill');
-  const steps = Array.from(document.querySelectorAll('.step'));
   const navLinks = Array.from(document.querySelectorAll('.top nav a'));
   const navFor = new Map(navLinks.map((a) => [a.getAttribute('href').slice(1), a]));
   let ticking = false;
@@ -147,19 +143,17 @@
     if (inTimeline) for (let i = active; i >= 0; i--) { if (navFor.has(segs[i].id)) { navId = segs[i].id; break; } }
     navLinks.forEach((a) => a.classList.toggle('current', a.getAttribute('href') === '#' + navId));
 
-    // vision steps: nearest to the viewport center gets focus and sets the chart state
-    if (steps.length) {
-      // blocks are top-anchored and joined by arrows: the last block whose top has
-      // crossed the viewport centre is the one in focus
-      let best = 0;
-      steps.forEach((st, i) => { if (st.getBoundingClientRect().top <= vh * 0.5) best = i; });
-      // every block that belongs to the focused chart state is lit together
-      const focus = steps[best].dataset.state;
-      steps.forEach((st) => st.classList.toggle('on', st.dataset.state === focus));
-      setVisionState(Number(focus) || 0);
-      // emit the trajectories once "Let's understand" has moved up past the viewport centre
-      if (!visionArmed && leadin && leadin.getBoundingClientRect().top < vh * 0.7) armVision();
-    }
+    // vision blocks: steps are top-anchored and joined by arrows, so the last step whose
+    // top has crossed the viewport centre is in focus; every step sharing its chart state
+    // is lit with it, and the block's chart follows
+    groups.forEach((g) => {
+      let best = -1;
+      g.steps.forEach((st, i) => { if (st.getBoundingClientRect().top <= vh * 0.5) best = i; });
+      const focus = best >= 0 ? g.steps[best].dataset.state : null;
+      g.steps.forEach((st) => st.classList.toggle('on', st.dataset.state === focus));
+      setGroupState(g, Number(focus) || 0);
+      if (!g.armed && g.steps[0] && g.steps[0].getBoundingClientRect().top < vh * 0.7) armGroup(g);
+    });
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
   window.addEventListener('scroll', onScroll, { passive: true });

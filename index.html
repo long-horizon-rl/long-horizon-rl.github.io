@@ -82,7 +82,7 @@
       <h2 class="statement wide" data-reveal style="--d:.05s">Runs end in an hour today.</h2>
       <div class="vision">
         <div class="steps">
-          <div class="step on bad first" data-state="0">
+          <div class="step bad first" data-state="0">
             <div class="vconn" aria-hidden="true"><svg viewBox="0 0 20 12"><path d="M2 2l8 8 8-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <span class="lbl leadin">Why?</span>
             <ul>
@@ -91,15 +91,39 @@
               <li>No one is checking a step, so errors compound.</li>
             </ul>
           </div>
-          <div class="step lead" data-state="0">
-            <div class="vconn" aria-hidden="true"><svg viewBox="0 0 20 12"><path d="M2 2l8 8 8-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <span class="lbl leadin">Three steps take them to weeks</span>
-            <div class="ladder">
+        </div>
+        <figure class="chart s0" id="vision-chart" role="img" aria-label="Today most runs end within an hour: every trajectory stops before the hour mark.">
+          <svg viewBox="0 0 920 480">
+            <g class="marks" stroke="#0176d3" stroke-width="1.6" stroke-dasharray="4 8">
+              <line class="u1" x1="380" y1="66" x2="380" y2="374"/>
+              <line class="u2" x1="560" y1="66" x2="560" y2="374"/>
+              <line class="u3" x1="740" y1="66" x2="740" y2="374"/>
+            </g>
+            <text class="sv-blue utext u1" font-size="21" x="390" y="52">Step 1</text>
+            <text class="sv-blue utext u2" font-size="21" x="570" y="52">Step 2</text>
+            <text class="sv-blue utext u3" font-size="21" x="750" y="52">Step 3</text>
+            <text class="sv-navy today" font-size="21" x="10" y="52">Today</text>
+            <text class="sv-blue still u3" font-size="16" x="905" y="368" text-anchor="end">still running</text>
+            <g class="traj" id="vision-traj"></g>
+            <line x1="10" y1="392" x2="905" y2="392" stroke="#b8c4d2" stroke-width="1.2"/>
+            <g stroke="#b8c4d2" stroke-width="1.2"><line x1="380" y1="388" x2="380" y2="396"/><line x1="560" y1="388" x2="560" y2="396"/><line x1="740" y1="388" x2="740" y2="396"/></g>
+            <g class="sv-ink" font-size="20">
+              <text x="10" y="428">minutes</text><text x="380" y="428" text-anchor="middle">an hour</text><text x="560" y="428" text-anchor="middle">a day</text><text x="740" y="428" text-anchor="middle">a week</text><text class="far" x="905" y="428" text-anchor="end">beyond</text>
+            </g>
+            <g class="sv-label" font-size="15">
+              <text x="380" y="454" text-anchor="middle">context window, process</text><text x="560" y="454" text-anchor="middle">attention, cost</text><text x="740" y="454" text-anchor="middle">errors compound</text>
+            </g>
+          </svg>
+        </figure>
+      </div>
+      <h3 class="statement wide sep" data-reveal>Three steps take them to weeks.</h3>
+      <div class="ladder" data-reveal style="--d:.1s">
         <span class="rung"><span class="num">1</span><span class="name">The harness</span><span class="to"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="buy">a day</span></span></span>
         <span class="rung"><span class="num">2</span><span class="name">Cascaded intelligence</span><span class="to"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="buy">a week</span></span></span>
         <span class="rung"><span class="num">3</span><span class="name">Specialized intelligence</span><span class="to"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="buy">weeks, and beyond</span></span></span>
-            </div>
-          </div>
+      </div>
+      <div class="vision">
+        <div class="steps">
           <div class="step" data-state="1">
             <div class="vconn" aria-hidden="true"><svg viewBox="0 0 20 12"><path d="M2 2l8 8 8-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             <span class="lbl">Step 1 · the harness</span>
@@ -131,7 +155,7 @@
             </ul>
           </div>
         </div>
-        <figure class="chart s0" id="vision-chart" role="img" aria-label="Trajectories grow longer with each unlock. Today most runs end within an hour. The harness unlocks a day; cascaded intelligence a week; specialized intelligence weeks and beyond.">
+        <figure class="chart s0" id="vision-chart-2" role="img" aria-label="Trajectories grow longer with each unlock. Today most runs end within an hour. The harness unlocks a day; cascaded intelligence a week; specialized intelligence weeks and beyond.">
           <svg viewBox="0 0 920 480">
             <g class="marks" stroke="#0176d3" stroke-width="1.6" stroke-dasharray="4 8">
               <line class="u1" x1="380" y1="66" x2="380" y2="374"/>
@@ -143,7 +167,7 @@
             <text class="sv-blue utext u3" font-size="21" x="750" y="52">Step 3</text>
             <text class="sv-navy today" font-size="21" x="10" y="52">Today</text>
             <text class="sv-blue still u3" font-size="16" x="905" y="368" text-anchor="end">still running</text>
-            <g class="traj" id="vision-traj"></g>
+            <g class="traj" id="vision-traj-2"></g>
             <line x1="10" y1="392" x2="905" y2="392" stroke="#b8c4d2" stroke-width="1.2"/>
             <g stroke="#b8c4d2" stroke-width="1.2"><line x1="380" y1="388" x2="380" y2="396"/><line x1="560" y1="388" x2="560" y2="396"/><line x1="740" y1="388" x2="740" y2="396"/></g>
             <g class="sv-ink" font-size="20">
