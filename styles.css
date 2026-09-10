@@ -160,7 +160,10 @@ body.scrolled .topbar{background:rgba(255,255,255,.82);backdrop-filter:saturate(
 .vision:not(.why) .step{min-height:var(--slot,clamp(520px,76vh,1100px));justify-content:center}
 /* page-down / spacebar / wheel scrolls that land near a step settle with its text level with the
    chart; the top margin keeps the snap centre in the area below the header */
-.vision.why,.vision:not(.why) .step{scroll-snap-align:center;scroll-margin-top:58px}
+/* Vision lands like every other section, kicker visible under the header; the kicker is the snap
+   target (not the tall section) because Chrome mishandles snap areas taller than the viewport */
+#vision .kicker{scroll-snap-align:start;scroll-margin-top:var(--seg-pad)}
+.vision:not(.why) .step{scroll-snap-align:center;scroll-margin-top:58px}
 .vision:not(.why) .step > .vconn{margin-top:-74px}
 .step h3{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em;line-height:1.05}
 .step p{margin-top:12px;color:var(--muted);font-size:17px;max-width:32ch}
